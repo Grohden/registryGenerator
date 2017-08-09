@@ -28,7 +28,7 @@ void showGUIMainMenu()
 int main(int argc, char **argv)
 {
     showGUIMainMenu();
-    generateEntries(10);
-
+    Registry *r = initRegistry();
+    writeSingleInFile(r);
     return 0;
 }
