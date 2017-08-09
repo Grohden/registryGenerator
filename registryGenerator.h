@@ -1,5 +1,8 @@
-#include "registry.h"
+typedef struct TypeRegistry {
+    int test;
+    char * str;
+} Registry;
 
-void writeRegistry(Registry * registry);
+Registry *initRegistry();
 
-// Registry * readRegistry;
+void generateEntries(int howMany);
