@@ -1,8 +1,11 @@
+#include <stdbool.h>
 #include "libs/chainedList/chainedList.h"
 
 typedef struct TypeRegistry {
-    int test;
-    char * str;
+    char key;
+    char sold;
+    char *operationValue;
+    char *operationDate;
 } Registry;
 
 Registry *initRegistry();

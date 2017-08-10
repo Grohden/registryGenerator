@@ -17,18 +17,27 @@ void showGUIMainMenu()
     ChainedList *c = initChain();
 
     //Add the items
-    addToChain(c, (void *) "Hello There!");
-    addToChain(c, (void *) "Im a simple selectable list");
-    addToChain(c, (void *) "Press enter here to add more options");
+    addToChain(c, (void *) "Generate File");
+    addToChain(c, (void *) "Exit Program");
+
 
     //Draw the seletable list and wait for the response
     int selected = drawSelectableList(c, true);
+
+
+    Registry *r = initRegistry();
+
+    switch(selected){
+        case 0:
+            writeSingleInFile(r);
+            break;
+        case 1:
+            break;
+    }
 }
 
 int main(int argc, char **argv)
 {
     showGUIMainMenu();
-    Registry *r = initRegistry();
-    writeSingleInFile(r);
     return 0;
 }

@@ -1,18 +1,39 @@
 #include <stdlib.h>
+#include <stdbool.h>
 #include "registryGenerator.h"
 #include "libs/ChainedList/chainedList.h"
 #include "libs/utils.h"
 
 #define REGISTRY_FILE_NAME "registryFile.txt"
-#define REGISTRY_INTERPOLATION_STRING "%d %s"
+#define REGISTRY_INTERPOLATION_STRING "%c %c %s %s"
 
-void fprintfRegistry(FILE * f,Registry *registry);
+char keyGenerationHolder = 0;
+
+void fprintfRegistry(FILE * f,Registry *registry)
+{
+    fprintf(
+        f,
+        REGISTRY_INTERPOLATION_STRING,
+        registry->key,
+        registry->sold,
+        registry->operationValue,
+        registry->operationDate 
+    );
+}
+
+char updateKeyGenerator(){
+    return (keyGenerationHolder++) - 1;
+}
 
 Registry *initRegistry()
 {
     Registry *registry = calloc(1, sizeof(Registry));
-    registry->str = "teste";
-    registry->test = 25;
+
+    registry->operationDate = "1502334751265"; // Thu Aug 10 2017 00:12:31 GMT-0300 (Hora oficial do Brasil)
+    registry->operationValue = "1000";
+    registry->key = updateKeyGenerator();
+    registry->sold = 'C';
+
     return registry;
 }
 
@@ -52,12 +73,3 @@ void writeListInFile(ChainedList *registries)
     fclose(registryFile);
 }
 
-void fprintfRegistry(FILE * f,Registry *registry)
-{
-    fprintf(
-        f,
-        REGISTRY_INTERPOLATION_STRING,
-        registry->test,
-        registry->str
-    );
-}
