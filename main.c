@@ -20,16 +20,16 @@ void showGUIMainMenu()
     addToChain(c, (void *) "Generate File");
     addToChain(c, (void *) "Exit Program");
 
-
     //Draw the seletable list and wait for the response
     int selected = drawSelectableList(c, true);
-
 
     Registry *r = initRegistry();
 
     switch(selected){
         case 0:
-            writeSingleInFile(r);
+            writeListInFile(
+                generateEntries(30)
+            );
             break;
         case 1:
             break;

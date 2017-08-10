@@ -5,9 +5,9 @@
 #include "libs/utils.h"
 
 #define REGISTRY_FILE_NAME "registryFile.txt"
-#define REGISTRY_INTERPOLATION_STRING "%c %c %s %s"
+#define REGISTRY_INTERPOLATION_STRING "%d %c %s %llu"
 
-char keyGenerationHolder = 0;
+int keyGenerationHolder = 0;
 
 void fprintfRegistry(FILE * f,Registry *registry)
 {
@@ -21,29 +21,30 @@ void fprintfRegistry(FILE * f,Registry *registry)
     );
 }
 
-char updateKeyGenerator(){
-    return (keyGenerationHolder++) - 1;
+int updateKeyGenerator(){
+    return keyGenerationHolder++;
 }
 
 Registry *initRegistry()
 {
     Registry *registry = calloc(1, sizeof(Registry));
 
-    registry->operationDate = "1502334751265"; // Thu Aug 10 2017 00:12:31 GMT-0300 (Hora oficial do Brasil)
-    registry->operationValue = "1000";
     registry->key = updateKeyGenerator();
     registry->sold = 'C';
+    registry->operationValue = "1000";
+    registry->operationDate = 1502334751265L; // Thu Aug 10 2017 00:12:31 GMT-0300 (Hora oficial do Brasil)
 
     return registry;
 }
 
-void generateEntries(int howMany)
+ChainedList* generateEntries(int howMany)
 {
     ChainedList *list = initChain();
     repeat(howMany)
     {
         addToChain(list, initRegistry());
     }
+    return list;
 };
 
 void writeSingleInFile(Registry *registry)

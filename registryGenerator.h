@@ -2,15 +2,15 @@
 #include "libs/chainedList/chainedList.h"
 
 typedef struct TypeRegistry {
-    char key;
+    int key;
     char sold;
     char *operationValue;
-    char *operationDate;
+    unsigned long long operationDate;
 } Registry;
 
 Registry *initRegistry();
 
-void generateEntries(int howMany);
+ChainedList* generateEntries(int howMany);
 
 void writeSingleInFile(Registry *registry);
 
