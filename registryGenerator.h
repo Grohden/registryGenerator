@@ -10,8 +10,6 @@ typedef struct TypeRegistry {
 
 Registry *initRegistry();
 
-ChainedList* generateEntries(int howMany);
-
 void writeSingleInFile(Registry *registry);
 
-void writeListInFile(ChainedList *registries);
+void writeListInFile(int howMany);

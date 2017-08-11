@@ -27,14 +27,13 @@ void showGUIMainMenu()
 
     switch(selected){
         case 0:
-            writeListInFile(
-                generateEntries(30)
-            );
+            writeListInFile(1000000);
             break;
         case 1:
             break;
     }
 }
+
 
 int main(int argc, char **argv)
 {

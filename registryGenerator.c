@@ -1,13 +1,18 @@
 #include <stdlib.h>
+#include <math.h>
 #include <stdbool.h>
 #include "registryGenerator.h"
 #include "libs/ChainedList/chainedList.h"
 #include "libs/utils.h"
 
-#define REGISTRY_FILE_NAME "registryFile.txt"
-#define REGISTRY_INTERPOLATION_STRING "%d %c %s %llu"
+static const char *REGISTRY_FILE_NAME = "registryFile.txt";
+static const char *REGISTRY_INTERPOLATION_STRING = "%10d %c %s %llu\n";
 
 int keyGenerationHolder = 0;
+
+float getValuePercentage(int value, char percentage){
+    return ((value/100) * percentage);
+}
 
 void fprintfRegistry(FILE * f,Registry *registry)
 {
@@ -37,16 +42,6 @@ Registry *initRegistry()
     return registry;
 }
 
-ChainedList* generateEntries(int howMany)
-{
-    ChainedList *list = initChain();
-    repeat(howMany)
-    {
-        addToChain(list, initRegistry());
-    }
-    return list;
-};
-
 void writeSingleInFile(Registry *registry)
 {
     FILE *registryFile = fopen(REGISTRY_FILE_NAME, "w");
@@ -55,22 +50,30 @@ void writeSingleInFile(Registry *registry)
     fclose(registryFile);
 }
 
-void writeListInFile(ChainedList *registries)
-{
-    if (isChainEmpty(registries))
-    {
-        println("Skippin write for empty chain list");
-        return;
-    }
-
-    int len = getChainLength(registries);
-    int i = 0;
-
+void writeListInFile(int howMany){
     FILE *registryFile = fopen(REGISTRY_FILE_NAME, "w");
-    each(i, len)
-    {
-        fprintfRegistry(registryFile, (Registry *) getChainDataAt(registries, i));
-    }
+
+    Registry * registry;
+
+    const int percentageStep = 10;
+    float stepSize = getValuePercentage(howMany, percentageStep); 
+    int percentageCount = 0;
+    int loaderCount = 0;
+    int count = 0;
+    
+    do {
+        registry = initRegistry();
+
+        fprintfRegistry(registryFile, registry);
+        if(loaderCount + stepSize < count){
+            println("%d", percentageCount);
+            percentageCount +=  percentageStep;
+            loaderCount += stepSize;
+        }
+
+        free(registry);    
+    } while(count++ < howMany);
+
     fclose(registryFile);
 }
 
