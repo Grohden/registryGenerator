@@ -17,6 +17,10 @@ int getRandomNumber(){
 	return rand();
 };
 
+int getRandomBetweenRange(int max, int min){
+    return (double) getRandomNumber() /(double) RAND_MAX * (max - min) + min;
+}
+
 
 int * generateRandomArray(int size){
 	int arrayLen = -1;

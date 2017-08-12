@@ -8,9 +8,13 @@
 #include "libs/utils.h"
 
 static const char *REGISTRY_FILE_NAME = "registryFile.txt";
-static const char *REGISTRY_INTERPOLATION_STRING = "%10d %c %s %llu\n";
+static const char *REGISTRY_INTERPOLATION_STRING = "%010d %c %09d %s\n";
+static const char *DATE_INTERPOLATION_STRING = "%02d/%02d/%04d";
 
-int keyGenerationHolder = 0;
+static int keyGenerationHolder = 0;
+
+
+char *generateRandomDate();
 
 float getValuePercentage(int value, char percentage){
     return ((value/100) * percentage);
@@ -41,9 +45,9 @@ Registry *initRegistry()
     Registry *registry = calloc(1, sizeof(Registry));
 
     registry->key = updateKeyGenerator();
-    registry->sold = 'C';
-    registry->operationValue = "1000";
-    registry->operationDate = 1502334751265L; // Thu Aug 10 2017 00:12:31 GMT-0300 (Hora oficial do Brasil)
+    registry->sold = getRandomBetweenRange(0,2) == 0 ? 'C' : 'V';
+    registry->operationValue = getRandomBetweenRange(100,999999999);
+    registry->operationDate = generateRandomDate();
 
     return registry;
 }
@@ -84,3 +88,19 @@ void writeListInFile(int howMany){
     fclose(registryFile);
 }
 
+char *generateRandomDate(){
+    int day = getRandomBetweenRange(1,30);
+    int month = getRandomBetweenRange(1,12);
+    int year = getRandomBetweenRange(1980,2060);
+    char *date = calloc(10,sizeof(char));
+    
+    sprintf(
+        date,
+        DATE_INTERPOLATION_STRING,
+        day,
+        month,
+        year
+    );
+
+    return date;
+}

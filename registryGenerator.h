@@ -4,8 +4,8 @@
 typedef struct TypeRegistry {
     int key;
     char sold;
-    char *operationValue;
-    unsigned long long operationDate;
+    int operationValue;
+    char *operationDate;
 } Registry;
 
 Registry *initRegistry();

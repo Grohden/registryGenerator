@@ -31,8 +31,7 @@ void showGUIMainMenu()
 
     switch(selected){
         case 0:
-            printAtBottom("%d",sizeof(Registry))
-            writeListInFile( gbToBytes / 33 );
+            writeListInFile( mbToBytes / 33 );
             pause();
             break;
         case 1:
