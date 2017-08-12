@@ -8,6 +8,10 @@
 
 #define SCREEN_RATIO 40
 
+const int kbToBytes = 1024;
+const int mbToBytes = 1024 * 1024;
+const int gbToBytes = 1024 * 1024 * 1024;
+
 void showGUIMainMenu()
 {
     //First we need to set screen size
@@ -27,7 +31,9 @@ void showGUIMainMenu()
 
     switch(selected){
         case 0:
-            writeListInFile(1000000);
+            printAtBottom("%d",sizeof(Registry))
+            writeListInFile( gbToBytes / 33 );
+            pause();
             break;
         case 1:
             break;

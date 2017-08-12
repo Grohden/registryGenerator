@@ -13,6 +13,9 @@
 //This should be a "macro"
 #define clearScreen() system("cls")
 
+#define printAtBottom(...); putCursorAt(0, getScreenHeight() - 2);println(__VA_ARGS__);
+
+
 //Keyboard numbers for arrows.
 typedef enum { UP = 72, DOWN = 80, LEFT = 75, RIGHT = 77 } direction;
 

@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include "registryGenerator.h"
 #include "libs/ChainedList/chainedList.h"
+#include "libs/SO/specifics.h"
+#include "libs/random/random.h"
 #include "libs/utils.h"
 
 static const char *REGISTRY_FILE_NAME = "registryFile.txt";
@@ -28,6 +30,10 @@ void fprintfRegistry(FILE * f,Registry *registry)
 
 int updateKeyGenerator(){
     return keyGenerationHolder++;
+}
+
+unsigned long long getRandomDate(){
+    return getRandomNumber();
 }
 
 Registry *initRegistry()
@@ -66,14 +72,15 @@ void writeListInFile(int howMany){
 
         fprintfRegistry(registryFile, registry);
         if(loaderCount + stepSize < count){
-            println("%d", percentageCount);
+            printAtBottom("%d %%", percentageCount);
             percentageCount +=  percentageStep;
             loaderCount += stepSize;
         }
 
         free(registry);    
-    } while(count++ < howMany);
+    } while(count++ < howMany - 1);
 
+    printAtBottom("Generated %d registries", howMany);
     fclose(registryFile);
 }
 

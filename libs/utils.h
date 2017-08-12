@@ -10,12 +10,4 @@
 
 #define println(...) printf(__VA_ARGS__); printf("\n");
 
-//Debug messages
-#define _USE_DEBUG 1
-#if _USE_DEBUG
-#define debugMsg(...) println(__VA_ARGS__);)
-#else
-//Maybe i could use something else..
-#define debugMsg(...) NULL;
-#endif
 #endif // _ROHDEN_UTILS
