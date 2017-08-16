@@ -13,3 +13,5 @@ Registry *initRegistry();
 void writeSingleInFile(Registry *registry);
 
 void writeListInFile(int howMany);
+
+int getSizeOfRegistry();

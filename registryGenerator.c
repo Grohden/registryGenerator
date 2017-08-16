@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
+#include <string.h>
 #include "registryGenerator.h"
 #include "libs/chainedList/chainedList.h"
 #include "libs/SO/specifics.h"
@@ -10,6 +11,7 @@
 static const char *REGISTRY_FILE_NAME = "registryFile.txt";
 static const char *REGISTRY_INTERPOLATION_STRING = "%010d %c %09d %s\n";
 static const char *DATE_INTERPOLATION_STRING = "%02d/%02d/%04d";
+static int cachedSize = 0;
 
 static int keyGenerationHolder = 0;
 
@@ -34,10 +36,6 @@ void fprintfRegistry(FILE * f,Registry *registry)
 
 int updateKeyGenerator(){
     return keyGenerationHolder++;
-}
-
-unsigned long long getRandomDate(){
-    return getRandomNumber();
 }
 
 Registry *initRegistry()
@@ -103,4 +101,26 @@ char *generateRandomDate(){
     );
 
     return date;
+}
+
+
+int getSizeOfRegistry(){
+    if(cachedSize){
+        return cachedSize;
+    }
+
+    char *stringHolder = calloc(100,1);
+    Registry *registry = initRegistry();
+    sprintf(
+        stringHolder,
+        REGISTRY_INTERPOLATION_STRING,
+        registry->key,
+        registry->sold,
+        registry->operationValue,
+        registry->operationDate 
+    );
+
+    printf("%s",stringHolder);
+
+    return cachedSize = strlen(stringHolder) * sizeof(char);
 }

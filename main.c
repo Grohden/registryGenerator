@@ -30,13 +30,9 @@ int showGUIMainMenu()
     //Draw the seletable list and wait for the response
     int selected = drawSelectableList(menuList, true);
 
-    Registry *r = initRegistry();
-
     switch(selected){
         case 0:
             generateByUserChoosenSize();
-            //writeListInFile( gbToBytes / sizeofRegistry );
-            pause();
             break;
     }
     
@@ -59,7 +55,7 @@ void generateByUserChoosenSize(){
 
     printf("\n");
 
-    int numberOfRegistries = pow(kbToBytes, chosenUnit) /sizeofRegistry;
+    int numberOfRegistries = pow(kbToBytes, chosenUnit) / getSizeOfRegistry();
 
     writeListInFile( numberOfRegistries );
 }
