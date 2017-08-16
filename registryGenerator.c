@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include "registryGenerator.h"
-#include "libs/ChainedList/chainedList.h"
+#include "libs/chainedList/chainedList.h"
 #include "libs/SO/specifics.h"
 #include "libs/random/random.h"
 #include "libs/utils.h"
