@@ -9,13 +9,17 @@ build: MAIN
 debug: MAIN
 	$(CC) $(GCCFLAGS) -g *.o -o main
 
-MAIN: GENERATOR TEXTUAL_GUI
+MAIN: READER TEXTUAL_GUI
 	$(CC) -g -c main.c
 
 GENERATOR:
 	$(CC) -g -c registryGenerator.c
 
-######### TEXTUAL GUI AND ITS DEPENDENCYS ########
+READER: GENERATOR
+	$(CC) -g -c registryReader.c
+
+
+######### TEXTUAL GUI AND ITS DEPENDENCIES ########
 
 TextualGUIBasePath = ./libs
 

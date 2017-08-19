@@ -22,7 +22,7 @@ ChainedList *getChainAt(ChainedList *chainHead, int chainAt)
 
     if ((getChainLength(chainHead) - 1) > chainAt || chainAt < 0)
     {
-        println("Index fora dos limites: %d", chainAt);
+        println("Index out of bounds: %d", chainAt);
     }
 
     //Next pois o head nao � contado

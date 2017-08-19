@@ -3,6 +3,7 @@
 #include <math.h>
 #include "main.h"
 #include "registryGenerator.h"
+#include "registryReader.h"
 #include "libs/utils.h"
 #include "libs/textualGUI/textualGUI.h"
 #include "libs/SO/specifics.h"
@@ -11,9 +12,12 @@
 #define SCREEN_RATIO 40
 
 static const int kbToBytes = 1024;
-static const int sizeofRegistry = 35; //bytes
 
 static ChainedList *menuList = NULL;
+
+void readFileForUser(){
+    readRegistryFile();
+}
 
 int showGUIMainMenu()
 {
@@ -23,7 +27,9 @@ int showGUIMainMenu()
     if(menuList == NULL){
         menuList = initChain();
         //Add the items
-        addToChain(menuList, (void *) "Generate File");
+        addToChain(menuList, (void *) "Generate File (Size)");
+        addToChain(menuList, (void *) "Generate File (Number of registries)");
+        addToChain(menuList, (void *) "Read File");
         addToChain(menuList, (void *) "Exit Program");
     }
 
@@ -33,6 +39,12 @@ int showGUIMainMenu()
     switch(selected){
         case 0:
             generateByUserChoosenSize();
+            break;
+        case 1:
+            //TODO
+            break;
+        case 2:
+            readFileForUser();
             break;
     }
     
@@ -66,7 +78,7 @@ int main(int argc, char **argv)
 
     do {
         chosen = showGUIMainMenu();
-    } while(chosen != 1);
+    } while(chosen != getChainLength(menuList) - 1);
 
     return 0;
 }

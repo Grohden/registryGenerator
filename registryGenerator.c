@@ -8,15 +8,13 @@
 #include "libs/random/random.h"
 #include "libs/utils.h"
 
-static const char *REGISTRY_FILE_NAME = "registryFile.txt";
-static const char *REGISTRY_INTERPOLATION_STRING = "%010d %c %09d %s\n";
-static const char *DATE_INTERPOLATION_STRING = "%02d/%02d/%04d";
+static const char *REGISTRY_INTERPOLATION_STRING = "%010d %c %09d %02d %02d %04d\n";
 static int cachedSize = 0;
 
 static int keyGenerationHolder = 0;
 
 
-char *generateRandomDate();
+Date *generateRandomDate();
 
 float getValuePercentage(int value, char percentage){
     return ((value/100) * percentage);
@@ -30,7 +28,9 @@ void fprintfRegistry(FILE * f,Registry *registry)
         registry->key,
         registry->sold,
         registry->operationValue,
-        registry->operationDate 
+        registry->operationDate->day,
+        registry->operationDate->month,
+        registry->operationDate->year
     );
 }
 
@@ -44,8 +44,26 @@ Registry *initRegistry()
 
     registry->key = updateKeyGenerator();
     registry->sold = getRandomBetweenRange(0,2) == 0 ? 'C' : 'V';
-    registry->operationValue = getRandomBetweenRange(100,999999999);
+    registry->operationValue = getRandomBetweenRange(100, 999999999);
     registry->operationDate = generateRandomDate();
+
+    return registry;
+}
+
+Registry *initEmptyRegistry()
+{
+    Registry *registry = calloc(1, sizeof(Registry));
+    Date *date = calloc(1,sizeof(Date));
+
+    date->day   = 1;
+    date->month = 1;
+    date->year  = 1970;
+    
+    
+    registry->key = 0;
+    registry->sold = 0;
+    registry->operationValue = 0;
+    registry->operationDate = date;
 
     return registry;
 }
@@ -86,20 +104,11 @@ void writeListInFile(int howMany){
     fclose(registryFile);
 }
 
-char *generateRandomDate(){
-    int day = getRandomBetweenRange(1,30);
-    int month = getRandomBetweenRange(1,12);
-    int year = getRandomBetweenRange(1980,2060);
-    char *date = calloc(10,sizeof(char));
-    
-    sprintf(
-        date,
-        DATE_INTERPOLATION_STRING,
-        day,
-        month,
-        year
-    );
-
+Date *generateRandomDate(){
+    Date *date   = calloc(1,sizeof(Date));
+    date->day    = getRandomBetweenRange(1,30);
+    date->month  = getRandomBetweenRange(1,12);
+    date->year   = getRandomBetweenRange(1980,2060);
     return date;
 }
 
@@ -119,8 +128,6 @@ int getSizeOfRegistry(){
         registry->operationValue,
         registry->operationDate 
     );
-
-    printf("%s",stringHolder);
 
     return cachedSize = strlen(stringHolder) * sizeof(char);
 }
