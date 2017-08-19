@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 #include "registryGenerator.h"
 #include "libs/chainedList/chainedList.h"
 #include "libs/SO/specifics.h"
@@ -77,6 +78,11 @@ void writeSingleInFile(Registry *registry)
 }
 
 void writeListInFile(unsigned int howMany){
+    if(!howMany){
+        println("0 is not a valid number");
+        return;
+    }
+
     FILE *registryFile = fopen(REGISTRY_FILE_NAME, "w");
 
     Registry * registry;
@@ -86,7 +92,10 @@ void writeListInFile(unsigned int howMany){
     int percentageCount = 0;
     int loaderCount = 0;
     int count = 0;
-    
+
+    time_t start_t, end_t;
+    time(&start_t);
+
     do {
         registry = initRegistry();
 
@@ -100,7 +109,11 @@ void writeListInFile(unsigned int howMany){
         free(registry);    
     } while(count++ < howMany - 1);
 
-    printAtBottom("Generated %d registries", howMany);
+    double diff_t;
+    time(&end_t);
+    diff_t = difftime(end_t, start_t);
+
+    printAtBottom("Generated %d registries in %.2f minutes", howMany, diff_t/60);
     pause();
     fclose(registryFile);
 }
