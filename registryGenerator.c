@@ -11,8 +11,8 @@
 static const char *REGISTRY_INTERPOLATION_STRING = "%010d %c %09d %02d %02d %04d\n";
 static int cachedSize = 0;
 
+//FIXME: change this to unsigned long long
 static int keyGenerationHolder = 0;
-
 
 Date *generateRandomDate();
 
@@ -76,7 +76,7 @@ void writeSingleInFile(Registry *registry)
     fclose(registryFile);
 }
 
-void writeListInFile(int howMany){
+void writeListInFile(unsigned int howMany){
     FILE *registryFile = fopen(REGISTRY_FILE_NAME, "w");
 
     Registry * registry;
@@ -101,6 +101,7 @@ void writeListInFile(int howMany){
     } while(count++ < howMany - 1);
 
     printAtBottom("Generated %d registries", howMany);
+    pause();
     fclose(registryFile);
 }
 

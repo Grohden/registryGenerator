@@ -41,14 +41,24 @@ int showGUIMainMenu()
             generateByUserChoosenSize();
             break;
         case 1:
-            //TODO
-            break;
+            generateByNumberOfRegistries();
+        break;
         case 2:
             readFileForUser();
             break;
     }
     
     return selected;
+}
+
+void generateByNumberOfRegistries(){
+
+    int howMany; 
+    printf("How many registries:");
+    scanf("%d", &howMany);
+
+    printf("\nGenerating registries");
+    writeListInFile( howMany );
 }
 
 void generateByUserChoosenSize(){
@@ -64,8 +74,7 @@ void generateByUserChoosenSize(){
         printf("Choose measure unit - GB(3) MB(2) KB(1):");
         scanf("%d", &chosenUnit);
     }
-
-    printf("\n");
+    printf("\nGenerating registries");
 
     int numberOfRegistries = pow(kbToBytes, chosenUnit) / getSizeOfRegistry();
 

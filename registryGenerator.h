@@ -26,7 +26,7 @@ Registry *initEmptyRegistry();
 
 void writeSingleInFile(Registry *registry);
 
-void writeListInFile(int howMany);
+void writeListInFile(unsigned int howMany);
 
 int getSizeOfRegistry();
 
