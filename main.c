@@ -63,12 +63,11 @@ void generateByNumberOfRegistries(){
     printf("How many registries:");
     scanf("%d", &howMany);
 
-    printf("\nGenerating registries");
+    println("\nGenerating registries");
     writeListInFile( howMany );
 }
 
 void generateByUserChoosenSize(){
-    putCursorAt(0, getScreenHeight() - 5);
     int chosenUnit;
     int howMany;
 
