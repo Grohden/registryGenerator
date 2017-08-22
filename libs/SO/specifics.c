@@ -1,6 +1,8 @@
 #include "specifics.h"
 #include <windows.h>
+#include <strings.h>
 #include <stdio.h>
+
 
 int _screenHeight_ = 0;
 int _screenWidth_ = 0;
@@ -21,7 +23,7 @@ void setTextColor(int k)
 
 void setScreenSize(int cols, int lines)
 {
-    //Command string format
+    Command string format
     char format[] = "mode con:cols=%d lines=%d";
     char *command = (char *)calloc(strlen(format), sizeof(char));
     sprintf(command, format, cols, lines);
@@ -54,9 +56,12 @@ int getScreenWidth()
 
 void hidecursor()
 {
+    
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO info;
     info.dwSize = 100;
     info.bVisible = FALSE;
     SetConsoleCursorInfo(consoleHandle, &info);
+    
 }
+

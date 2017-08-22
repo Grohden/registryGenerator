@@ -3,13 +3,13 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include "registry.h"
 #include "registryGenerator.h"
 #include "libs/chainedList/chainedList.h"
 #include "libs/SO/specifics.h"
 #include "libs/random/random.h"
 #include "libs/utils.h"
 
-static const char *REGISTRY_INTERPOLATION_STRING = "%010d %c %09d %02d %02d %04d\n";
 static int cachedSize = 0;
 
 //FIXME: change this to unsigned long long

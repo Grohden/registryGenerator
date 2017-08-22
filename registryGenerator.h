@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include "registry.h"
 #include "libs/chainedList/chainedList.h"
 
 #ifndef _REGISTRY_GENERATOR_
@@ -6,19 +7,6 @@
 
 #define REGISTRY_FILE_NAME "registryFile.txt"
 
-//TODO: create date lib for this struct
-typedef struct TypeDate {
-    char day;
-    char month;
-    int year;
-} Date;
-
-typedef struct TypeRegistry {
-    int key;
-    char sold;
-    int operationValue;
-    Date *operationDate;
-} Registry;
 
 Registry *initRegistry();
 

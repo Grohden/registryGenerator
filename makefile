@@ -12,10 +12,13 @@ debug: MAIN
 MAIN: READER TEXTUAL_GUI
 	$(CC) -g -c main.c
 
-GENERATOR:
+REGISTRY:
+	$(CC) -g -c registry.c
+
+GENERATOR: REGISTRY
 	$(CC) -g -c registryGenerator.c
 
-READER: GENERATOR
+READER: REGISTRY
 	$(CC) -g -c registryReader.c
 
 
