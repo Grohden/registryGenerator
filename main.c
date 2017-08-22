@@ -16,6 +16,8 @@ static const int kbToBytes = 1024;
 
 static ChainedList *menuList = NULL;
 
+static char readableMeasures[3][2] = {"Gb","Mb","Kb"};
+
 void readFileForUser(){
     readPaginated();
 }
@@ -39,12 +41,15 @@ int showGUIMainMenu()
 
     switch(selected){
         case 0:
+            clearScreen();
             generateByUserChoosenSize();
             break;
         case 1:
+            clearScreen();
             generateByNumberOfRegistries();
         break;
         case 2:
+            clearScreen();    
             readFileForUser();
             break;
     }
@@ -65,20 +70,26 @@ void generateByNumberOfRegistries(){
 void generateByUserChoosenSize(){
     putCursorAt(0, getScreenHeight() - 5);
     int chosenUnit;
+    int howMany;
 
-    printf("Choose measure unit - GB(3) MB(2) KB(1):");
+    printf("Choose measure unit - Gb(3) Mb(2) Kb(1):");
     scanf("%d", &chosenUnit);
 
     while(chosenUnit < 0 || chosenUnit > 3){
         println("Invalid entry.");
-        printf("Choose measure unit - GB(3) MB(2) KB(1):");
+        printf("Choose measure unit - Gb(3) Mb(2) Kb(1):");
         scanf("%d", &chosenUnit);
     }
-    printf("\nGenerating registries");
 
-    int numberOfRegistries = floor(pow(kbToBytes, chosenUnit) / getSizeOfRegistry());
+    printf("How many of this measure? ");
+    scanf("%d", &howMany);
 
-    writeListInFile( numberOfRegistries );
+    println("\nGenerating %d %s's of registries", howMany, readableMeasures[chosenUnit]);
+    writeListInFile( 
+        floor(
+            pow(kbToBytes, chosenUnit) / getSizeOfRegistry()
+        ) * howMany
+    );
 }
 
 int main(int argc, char **argv)

@@ -101,8 +101,8 @@ void writeListInFile(unsigned int howMany){
 
     Registry * registry;
 
-    const int percentageStep = 10;
-    float stepSize = getValuePercentage(howMany, percentageStep); 
+    const int percentageStep = howMany < 1000000 ? 10 : 5;
+    const float stepSize = getValuePercentage(howMany, percentageStep); 
     int percentageCount = 0;
     int loaderCount = 0;
     int count = 0;
@@ -115,7 +115,7 @@ void writeListInFile(unsigned int howMany){
 
         fprintfRegistry(registryFile, registry);
         if(loaderCount + stepSize < count){
-            printAtBottom("%d %%", percentageCount);
+            println("%d %%", percentageCount);
             percentageCount +=  percentageStep;
             loaderCount += stepSize;
         }
