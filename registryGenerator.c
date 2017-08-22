@@ -152,5 +152,5 @@ int getSizeOfRegistry(){
     );
 
 
-    return cachedSize = strlen(stringHolder) * sizeof(char);
+    return cachedSize = ((strlen(stringHolder) + 1 /* \n char */) * sizeof(char));
 }

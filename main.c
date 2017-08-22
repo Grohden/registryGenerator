@@ -69,7 +69,6 @@ void generateByUserChoosenSize(){
     printf("Choose measure unit - GB(3) MB(2) KB(1):");
     scanf("%d", &chosenUnit);
 
-    int acc =  getScreenHeight() - 4;
     while(chosenUnit < 0 || chosenUnit > 3){
         println("Invalid entry.");
         printf("Choose measure unit - GB(3) MB(2) KB(1):");
@@ -77,7 +76,7 @@ void generateByUserChoosenSize(){
     }
     printf("\nGenerating registries");
 
-    int numberOfRegistries = pow(kbToBytes, chosenUnit) / getSizeOfRegistry();
+    int numberOfRegistries = floor(pow(kbToBytes, chosenUnit) / getSizeOfRegistry());
 
     writeListInFile( numberOfRegistries );
 }

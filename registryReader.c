@@ -61,7 +61,6 @@ void readPaginated()
 
 void readRegistryFile(int pageSize)
 {
-    int c;
     FILE *file;
     //FIXME: handle error
     file = fopen(REGISTRY_FILE_NAME, "r");
