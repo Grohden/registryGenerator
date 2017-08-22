@@ -16,7 +16,7 @@ static const int kbToBytes = 1024;
 
 static ChainedList *menuList = NULL;
 
-static char readableMeasures[3][2] = {"Gb","Mb","Kb"};
+static char readableMeasures[3][3] = {"Gb\0","Mb\0","Kb\0"};
 
 void readFileForUser(){
     readPaginated();
