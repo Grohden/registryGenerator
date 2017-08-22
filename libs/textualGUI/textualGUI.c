@@ -149,13 +149,15 @@ int drawSelectableList(ChainedList *options, bool circularSelection)
         }
     } while (key != 13); //Enter key.
 
-    //Assure the next print will be white with bg white
+    //Assure the next print will be white with bg black (FIXME: isnt working)
     setTextColor(BLACK_WHITE);
     //Put the cursor at the bottom
     putCursorAt(0, getScreenHeight() - 2);
 
     //Flush to prevent buffer keys
     fflush(stdin);
+    
+    showcursor();
 
     //Return the selected option number
     return selectedOption;

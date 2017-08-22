@@ -32,4 +32,6 @@ void setScreenSize(int cols, int lines);
 void ensureScreenSize();
 
 void hidecursor();
+
+void showcursor();
 #endif // !_SO_SPECIFICS_

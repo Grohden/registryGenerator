@@ -1,5 +1,6 @@
 #include "specifics.h"
 #include <windows.h>
+#include <stdbool.h>
 #include <strings.h>
 #include <stdio.h>
 
@@ -62,6 +63,15 @@ void hidecursor()
     info.dwSize = 100;
     info.bVisible = FALSE;
     SetConsoleCursorInfo(consoleHandle, &info);
+}
+
+void showcursor()
+{
     
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 100;
+    info.bVisible = TRUE;
+    SetConsoleCursorInfo(consoleHandle, &info);
 }
 
