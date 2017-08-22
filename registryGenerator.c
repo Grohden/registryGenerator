@@ -15,13 +15,27 @@ static int cachedSize = 0;
 //FIXME: change this to unsigned long long
 static int keyGenerationHolder = 0;
 
-Date *generateRandomDate();
+static int updateKeyGenerator(){
+    return keyGenerationHolder++;
+}
 
-float getValuePercentage(int value, char percentage){
+static void clearKeys(){
+    keyGenerationHolder = 0;
+}
+
+static Date *generateRandomDate(){
+    Date *date   = calloc(1,sizeof(Date));
+    date->day    = getRandomBetweenRange(1,30);
+    date->month  = getRandomBetweenRange(1,12);
+    date->year   = getRandomBetweenRange(1980,2060);
+    return date;
+}
+
+static float getValuePercentage(int value, char percentage){
     return ((value/100) * percentage);
 }
 
-void fprintfRegistry(FILE * f,Registry *registry)
+static void fprintfRegistry(FILE * f,Registry *registry)
 {
     fprintf(
         f,
@@ -35,9 +49,7 @@ void fprintfRegistry(FILE * f,Registry *registry)
     );
 }
 
-int updateKeyGenerator(){
-    return keyGenerationHolder++;
-}
+
 
 Registry *initRegistry()
 {
@@ -83,6 +95,8 @@ void writeListInFile(unsigned int howMany){
         return;
     }
 
+    clearKeys();
+
     FILE *registryFile = fopen(REGISTRY_FILE_NAME, "w");
 
     Registry * registry;
@@ -116,14 +130,6 @@ void writeListInFile(unsigned int howMany){
     printAtBottom("Generated %d registries in %.2f minutes", howMany, diff_t/60);
     pause();
     fclose(registryFile);
-}
-
-Date *generateRandomDate(){
-    Date *date   = calloc(1,sizeof(Date));
-    date->day    = getRandomBetweenRange(1,30);
-    date->month  = getRandomBetweenRange(1,12);
-    date->year   = getRandomBetweenRange(1980,2060);
-    return date;
 }
 
 

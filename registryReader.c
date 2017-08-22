@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "./libs/SO/specifics.h"
+#include "./libs/utils.h"
 #include "registry.h"
 #include "registryReader.h"
 #include "registryGenerator.h"
@@ -11,6 +12,7 @@ void readPaginated()
     int printedCount;
     int c;
     bool shouldKeepReading = true;
+    bool hasReadWholeFile = false;
 
     FILE *file;
 
@@ -28,7 +30,7 @@ void readPaginated()
 
         do
         {
-            fscanf(
+            hasReadWholeFile = fscanf(
                 file,
                 "%d %c %d %d %d %d",
                 &registry->key,
@@ -37,17 +39,20 @@ void readPaginated()
                 &registry->operationDate->day,
                 &registry->operationDate->month,
                 &registry->operationDate->year
-            );
+            ) == EOF;
             printRegistry(registry);
 
-        } while (++printedCount < pageSize);
+        } while (++printedCount < pageSize && !hasReadWholeFile);
 
-        printf("Keep reading? (y/n): ");
+        if(!hasReadWholeFile){
+            printf("Keep reading? (y/n): ");
+            getchar(); // handles enter key buffer.
+            shouldKeepReading = getchar() == 'y'; //fixme:handle insenstive.
+        } else {
+            println("There are no more registries to read.");
+        }
         
-        getchar(); // handles enter key buffer.
-
-        shouldKeepReading = getchar() == 'y';
-    } while (shouldKeepReading);
+    } while (shouldKeepReading && !hasReadWholeFile);
 
     fclose(file);
 
