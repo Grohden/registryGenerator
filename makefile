@@ -1,5 +1,5 @@
 CC=gcc
-GCCFLAGS=-Wall
+GCCFLAGS=-Wall -std=c99
 
 ##################### TASKS #####################
 
@@ -10,16 +10,16 @@ debug: MAIN
 	$(CC) $(GCCFLAGS) -g *.o -o main
 
 MAIN: READER GENERATOR TEXTUAL_GUI
-	$(CC) -g -c main.c
+	$(CC) $(GCCFLAGS) -g -c main.c
 
 REGISTRY:
-	$(CC) -g -c registry.c
+	$(CC) $(GCCFLAGS) -g -c registry.c
 
 GENERATOR: REGISTRY
-	$(CC) -g -c registryGenerator.c
+	$(CC) $(GCCFLAGS) -g -c registryGenerator.c
 
 READER: REGISTRY
-	$(CC) -g -c registryReader.c
+	$(CC) $(GCCFLAGS) -g -c registryReader.c
 
 
 ######### TEXTUAL GUI AND ITS DEPENDENCIES ########
@@ -27,15 +27,15 @@ READER: REGISTRY
 TextualGUIBasePath = ./libs
 
 TEXTUAL_GUI: UTILS SO CHAINED_LIST 
-	$(CC) -c $(TextualGUIBasePath)/textualGUI/textualGUI.c
+	$(CC) $(GCCFLAGS) -c $(TextualGUIBasePath)/textualGUI/textualGUI.c
 
 CHAINED_LIST:
-	$(CC) -c $(TextualGUIBasePath)/chainedList/chainedList.c
+	$(CC) $(GCCFLAGS) -c $(TextualGUIBasePath)/chainedList/chainedList.c
 
 UTILS:
-	$(CC) -c $(TextualGUIBasePath)/random/random.c
+	$(CC) $(GCCFLAGS) -c $(TextualGUIBasePath)/random/random.c
 
 SO:
-	$(CC) -c $(TextualGUIBasePath)/SO/specifics.c
+	$(CC) $(GCCFLAGS) -c $(TextualGUIBasePath)/SO/specifics.c
 
 ######################## ########################
