@@ -39,7 +39,7 @@ static void fprintfRegistry(FILE * f,Registry *registry)
 {
     fprintf(
         f,
-        REGISTRY_INTERPOLATION_STRING,
+        REGISTRY_WRITE_STRING,
         registry->key,
         registry->sold,
         registry->operationValue,
@@ -142,7 +142,7 @@ int getSizeOfRegistry(){
     Registry *registry = initRegistry();
     sprintf(
         stringHolder,
-        REGISTRY_INTERPOLATION_STRING,
+        REGISTRY_READ_STRING,
         registry->key,
         registry->sold,
         registry->operationValue,

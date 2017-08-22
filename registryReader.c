@@ -6,8 +6,6 @@
 #include "registryReader.h"
 #include "registryGenerator.h"
 
-static char *READ_REGISTRY_STRING = "%d %c %d %c %c %d";
-
 void readPaginated()
 {
     int pageSize;
@@ -33,7 +31,7 @@ void readPaginated()
         {
             hasReadWholeFile = fscanf(
                 file,
-                READ_REGISTRY_STRING,
+                REGISTRY_READ_STRING,
                 &registry->key,
                 &registry->sold,
                 &registry->operationValue,
@@ -70,7 +68,7 @@ void readRegistryFile(int pageSize)
 
     fscanf(
         file,
-        READ_REGISTRY_STRING,
+        REGISTRY_READ_STRING,
         &registry->key,
         &registry->sold,
         &registry->operationValue,

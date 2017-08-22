@@ -84,7 +84,7 @@ void generateByUserChoosenSize(){
     printf("How many of this measure? ");
     scanf("%d", &howMany);
 
-    println("\nGenerating %d %s's of registries", howMany, readableMeasures[chosenUnit]);
+    println("\nGenerating %d %s's of registries", howMany, readableMeasures[chosenUnit - 1]);
     writeListInFile( 
         floor(
             pow(kbToBytes, chosenUnit) / getSizeOfRegistry()
