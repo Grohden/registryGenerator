@@ -146,8 +146,11 @@ int getSizeOfRegistry(){
         registry->key,
         registry->sold,
         registry->operationValue,
-        registry->operationDate 
+        registry->operationDate->day,
+        registry->operationDate->month,
+        registry->operationDate->year
     );
+
 
     return cachedSize = strlen(stringHolder) * sizeof(char);
 }
