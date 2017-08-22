@@ -9,7 +9,7 @@ build: MAIN
 debug: MAIN
 	$(CC) $(GCCFLAGS) -g *.o -o main
 
-MAIN: READER TEXTUAL_GUI
+MAIN: READER GENERATOR TEXTUAL_GUI
 	$(CC) -g -c main.c
 
 REGISTRY:

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <conio.h>
+#include <conio.h> //Why conio? for colors?
 #include "textualGUI.h"
 #include "../SO/specifics.h"
 #include "../utils.h"
