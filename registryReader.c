@@ -18,7 +18,7 @@ void readPaginated()
     //FIXME: handle error
     file = fopen(REGISTRY_FILE_NAME, "r");
 
-    Registry *registry = initEmptyRegistry();
+    Registry *registry = initRegistry();
 
     printf("Page size: ");
     scanf("%d", &pageSize);
@@ -64,7 +64,7 @@ void readRegistryFile(int pageSize)
     //FIXME: handle error
     file = fopen(REGISTRY_FILE_NAME, "r");
 
-    Registry *registry = initEmptyRegistry();
+    Registry *registry = initRegistry();
 
     fscanf(
         file,

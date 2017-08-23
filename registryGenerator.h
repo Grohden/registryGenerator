@@ -8,9 +8,9 @@
 #define REGISTRY_FILE_NAME "registryFile.txt"
 
 
-Registry *initRegistry();
+Registry *initRandomRegistry();
 
-Registry *initEmptyRegistry();
+Registry *initRegistry();
 
 void writeSingleInFile(Registry *registry);
 

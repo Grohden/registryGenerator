@@ -51,7 +51,7 @@ static void fprintfRegistry(FILE * f,Registry *registry)
 
 
 
-Registry *initRegistry()
+Registry *initRandomRegistry()
 {
     Registry *registry = calloc(1, sizeof(Registry));
 
@@ -111,7 +111,7 @@ void writeListInFile(unsigned int howMany){
     time(&start_t);
 
     do {
-        registry = initRegistry();
+        registry = initRandomRegistry();
 
         fprintfRegistry(registryFile, registry);
         if(loaderCount + stepSize < count){
@@ -139,7 +139,7 @@ int getSizeOfRegistry(){
     }
 
     char *stringHolder = calloc(100,1);
-    Registry *registry = initRegistry();
+    Registry *registry = initRandomRegistry();
     sprintf(
         stringHolder,
         REGISTRY_READ_STRING,
