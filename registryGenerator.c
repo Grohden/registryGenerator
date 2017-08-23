@@ -5,7 +5,6 @@
 #include <string.h>
 #include <time.h>
 #include "libs/SO/specifics.h"
-#include "libs/chainedList/chainedList.h"
 #include "libs/random/random.h"
 #include "libs/utils.h"
 #include "registry.h"
@@ -63,8 +62,8 @@ void writeSingleInFile(Registry *registry) {
 }
 
 void writeListInFile(unsigned int howMany) {
-  if (!howMany) {
-    println("0 is not a valid number");
+  if (howMany < 1) {
+    println("%d is not a valid number",howMany);
     return;
   }
 
@@ -110,7 +109,7 @@ int getSizeOfRegistry() {
     return cachedSize;
   }
 
-  char *stringHolder = calloc(100, 1);
+  char *stringHolder = calloc(100, sizeof(char));
   Registry *registry = initRandomRegistry();
   sprintf(
     stringHolder,

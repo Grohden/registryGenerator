@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int CALLED_SEED = 0;
+static int CALLED_SEED = 0;
 
-void makeSureSeed()
+static void makeSureSeed()
 {
     if (!CALLED_SEED)
     {

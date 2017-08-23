@@ -5,7 +5,6 @@
 #ifndef _REGISTRY_GENERATOR_
 #define _REGISTRY_GENERATOR_ 1
 
-#define REGISTRY_FILE_NAME "registryFile.txt"
 
 Registry *initRandomRegistry();
 

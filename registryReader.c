@@ -14,8 +14,11 @@ void readPaginated() {
 
   FILE *file;
 
-  // FIXME: handle error
-  file = fopen(REGISTRY_FILE_NAME, "r");
+  if((file = fopen(REGISTRY_FILE_NAME, "r")) == NULL) {
+    println("Error, there's no registry file to be read.");
+    pause();
+    return;
+  };
 
   Registry *registry = initRegistry();
 
@@ -24,15 +27,19 @@ void readPaginated() {
 
   do {
     printedCount = 0;
-
     do {
-      hasReadWholeFile =
-          fscanf(file, REGISTRY_READ_STRING, &registry->key, &registry->sold,
-                 &registry->operationValue, &registry->operationDate->day,
-                 &registry->operationDate->month,
-                 &registry->operationDate->year) == EOF;
-      printRegistry(registry);
-
+        hasReadWholeFile =
+          fscanf(file, REGISTRY_READ_STRING, 
+            &registry->key,
+            &registry->sold,
+            &registry->operationValue,
+            &registry->operationDate->day,
+            &registry->operationDate->month,
+            &registry->operationDate->year
+          ) == EOF;
+          if(!hasReadWholeFile){
+            printRegistry(registry);            
+          }
     } while (++printedCount < pageSize && !hasReadWholeFile);
 
     if (!hasReadWholeFile) {
@@ -46,22 +53,23 @@ void readPaginated() {
   } while (shouldKeepReading && !hasReadWholeFile);
 
   fclose(file);
-
   pause();
 }
 
 void readRegistryFile(int pageSize) {
   FILE *file;
-  // FIXME: handle error
-  file = fopen(REGISTRY_FILE_NAME, "r");
+  
 
-  Registry *registry = initRegistry();
+  if((file = fopen(REGISTRY_FILE_NAME, "r")) != NULL){
+    Registry *registry = initRegistry();
 
-  fscanf(file, REGISTRY_READ_STRING, &registry->key, &registry->sold,
-         &registry->operationValue, &registry->operationDate->day,
-         &registry->operationDate->month, &registry->operationDate->year);
+    fscanf(file, REGISTRY_READ_STRING, &registry->key, &registry->sold,
+          &registry->operationValue, &registry->operationDate->day,
+          &registry->operationDate->month, &registry->operationDate->year);
 
-  fclose(file);
-
+    fclose(file);
+  } else {
+    println("Error, there's no registry file to be read.");
+  }
   pause();
 };
