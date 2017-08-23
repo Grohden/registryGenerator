@@ -18,7 +18,8 @@ typedef struct TypeRegistry {
 #define REGISTRY_WRITE_STRING "%010d %c %09d %02d %02d %04d\n"
 #define REGISTRY_READ_STRING "%d %c %d %d %d %d"
 
-
 void printRegistry(Registry *reg);
+
+Registry *initRegistry();
 
 #endif // !_REGISTRY_

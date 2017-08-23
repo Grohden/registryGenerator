@@ -49,8 +49,6 @@ static void fprintfRegistry(FILE * f,Registry *registry)
     );
 }
 
-
-
 Registry *initRandomRegistry()
 {
     Registry *registry = calloc(1, sizeof(Registry));
@@ -59,24 +57,6 @@ Registry *initRandomRegistry()
     registry->sold = getRandomBetweenRange(0,2) == 0 ? 'C' : 'V';
     registry->operationValue = getRandomBetweenRange(100, 999999999);
     registry->operationDate = generateRandomDate();
-
-    return registry;
-}
-
-Registry *initEmptyRegistry()
-{
-    Registry *registry = calloc(1, sizeof(Registry));
-    Date *date = calloc(1,sizeof(Date));
-
-    date->day   = 1;
-    date->month = 1;
-    date->year  = 1970;
-    
-    
-    registry->key = 0;
-    registry->sold = 0;
-    registry->operationValue = 0;
-    registry->operationDate = date;
 
     return registry;
 }
