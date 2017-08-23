@@ -7,4 +7,4 @@ void readRegistryFile(int pageSize);
 
 void readPaginated();
 
-#endif // !_REGISTRY_READER_
+#endif  // !_REGISTRY_READER_

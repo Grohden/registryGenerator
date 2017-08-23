@@ -1,6 +1,6 @@
 #include <stdbool.h>
-#include "registry.h"
 #include "libs/chainedList/chainedList.h"
+#include "registry.h"
 
 #ifndef _REGISTRY_GENERATOR_
 #define _REGISTRY_GENERATOR_ 1
@@ -15,4 +15,4 @@ void writeListInFile(unsigned int howMany);
 
 int getSizeOfRegistry();
 
-#endif //!_REGISTRY_GENERATOR_
+#endif  //!_REGISTRY_GENERATOR_

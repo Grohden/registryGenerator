@@ -1,83 +1,67 @@
-#include <stdlib.h>
+#include "registryReader.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "./libs/SO/specifics.h"
 #include "./libs/utils.h"
 #include "registry.h"
-#include "registryReader.h"
 #include "registryGenerator.h"
 
-void readPaginated()
-{
-    int pageSize;
-    int printedCount;
-    bool shouldKeepReading = true;
-    bool hasReadWholeFile = false;
+void readPaginated() {
+  int pageSize;
+  int printedCount;
+  bool shouldKeepReading = true;
+  bool hasReadWholeFile = false;
 
-    FILE *file;
+  FILE *file;
 
-    //FIXME: handle error
-    file = fopen(REGISTRY_FILE_NAME, "r");
+  // FIXME: handle error
+  file = fopen(REGISTRY_FILE_NAME, "r");
 
-    Registry *registry = initRegistry();
+  Registry *registry = initRegistry();
 
-    printf("Page size: ");
-    scanf("%d", &pageSize);
+  printf("Page size: ");
+  scanf("%d", &pageSize);
 
-    do
-    {
-        printedCount = 0;
+  do {
+    printedCount = 0;
 
-        do
-        {
-            hasReadWholeFile = fscanf(
-                file,
-                REGISTRY_READ_STRING,
-                &registry->key,
-                &registry->sold,
-                &registry->operationValue,
-                &registry->operationDate->day,
-                &registry->operationDate->month,
-                &registry->operationDate->year
-            ) == EOF;
-            printRegistry(registry);
+    do {
+      hasReadWholeFile =
+          fscanf(file, REGISTRY_READ_STRING, &registry->key, &registry->sold,
+                 &registry->operationValue, &registry->operationDate->day,
+                 &registry->operationDate->month,
+                 &registry->operationDate->year) == EOF;
+      printRegistry(registry);
 
-        } while (++printedCount < pageSize && !hasReadWholeFile);
+    } while (++printedCount < pageSize && !hasReadWholeFile);
 
-        if(!hasReadWholeFile){
-            printf("Keep reading? (y/n): ");
-            getchar(); // handles enter key buffer.
-            shouldKeepReading = getchar() == 'y'; //fixme:handle insenstive.
-        } else {
-            println("There are no more registries to read.");
-        }
-        
-    } while (shouldKeepReading && !hasReadWholeFile);
+    if (!hasReadWholeFile) {
+      printf("Keep reading? (y/n): ");
+      getchar();                             // handles enter key buffer.
+      shouldKeepReading = getchar() == 'y';  // fixme:handle insenstive.
+    } else {
+      println("There are no more registries to read.");
+    }
 
-    fclose(file);
+  } while (shouldKeepReading && !hasReadWholeFile);
 
-    pause();
+  fclose(file);
+
+  pause();
 }
 
-void readRegistryFile(int pageSize)
-{
-    FILE *file;
-    //FIXME: handle error
-    file = fopen(REGISTRY_FILE_NAME, "r");
+void readRegistryFile(int pageSize) {
+  FILE *file;
+  // FIXME: handle error
+  file = fopen(REGISTRY_FILE_NAME, "r");
 
-    Registry *registry = initRegistry();
+  Registry *registry = initRegistry();
 
-    fscanf(
-        file,
-        REGISTRY_READ_STRING,
-        &registry->key,
-        &registry->sold,
-        &registry->operationValue,
-        &registry->operationDate->day,
-        &registry->operationDate->month,
-        &registry->operationDate->year
-    );
+  fscanf(file, REGISTRY_READ_STRING, &registry->key, &registry->sold,
+         &registry->operationValue, &registry->operationDate->day,
+         &registry->operationDate->month, &registry->operationDate->year);
 
-    fclose(file);
+  fclose(file);
 
-    pause();
+  pause();
 };
