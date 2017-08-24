@@ -91,8 +91,9 @@ void writeListInFile(unsigned int howMany) {
       percentageCount += percentageStep;
       loaderCount += stepSize;
     }
-
+    free(registry->operationDate);
     free(registry);
+
   } while (count++ < howMany - 1);
 
   double diff_t;
@@ -113,7 +114,7 @@ int getSizeOfRegistry() {
   Registry *registry = initRandomRegistry();
   sprintf(
     stringHolder,
-    REGISTRY_READ_STRING, 
+    REGISTRY_WRITE_STRING, 
     registry->key,
     registry->sold,
     registry->operationValue,
@@ -122,5 +123,8 @@ int getSizeOfRegistry() {
     registry->operationDate->year
   );
 
-  return cachedSize = ((strlen(stringHolder) + 1 /* \n char */) * sizeof(char));
+  cachedSize = ((strlen(stringHolder) + 1 /* \n char */) * sizeof(char));
+  free(stringHolder);
+
+  return cachedSize;
 }
