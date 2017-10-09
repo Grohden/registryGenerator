@@ -81,8 +81,7 @@ void generateByUserChoosenSize() {
 
   println("\nGenerating %d %s's of registries", howMany,
           readableMeasures[chosenUnit - 1]);
-  writeListInFile(floor(pow(kbToBytes, chosenUnit) / getSizeOfRegistry()) *
-                  howMany);
+  writeListInFile(floor(pow(kbToBytes, chosenUnit) / getSizeOfRegistry()) * howMany);
 }
 
 int main(int argc, char **argv) {

@@ -1,9 +1,12 @@
 #include "registry.h"
-
+#include <stdio.h>
+#include "./libs/array/array.h"
 #ifndef _REGISTRY_READER_
 #define _REGISTRY_READER_ 1
 
 void readRegistryFile(int pageSize);
+
+Array *readPageToMemory(FILE * file, int pageSize);
 
 void readPaginated();
 

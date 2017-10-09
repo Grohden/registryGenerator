@@ -1,5 +1,5 @@
 CC=gcc
-GCCFLAGS=-Wall -std=c99
+GCCFLAGS=-Wall
 
 ##################### TASKS #####################
 
@@ -9,7 +9,7 @@ build: MAIN
 debug: MAIN
 	$(CC) $(GCCFLAGS) -g *.o -o main
 
-MAIN: READER GENERATOR TEXTUAL_GUI
+MAIN: READER GENERATOR SORT TEXTUAL_GUI
 	$(CC) $(GCCFLAGS) -g -c main.c
 
 REGISTRY:
@@ -18,8 +18,14 @@ REGISTRY:
 GENERATOR: REGISTRY
 	$(CC) $(GCCFLAGS) -g -c registryGenerator.c
 
-READER: REGISTRY
+READER: REGISTRY ARRAY
 	$(CC) $(GCCFLAGS) -g -c registryReader.c
+
+SORT: REGISTRY
+	$(CC) $(GCCFLAGS) -g -c registrySort.c
+
+ARRAY:
+	$(CC) $(GCCFLAGS) -g -c libs/array/array.c
 
 
 ######### TEXTUAL GUI AND ITS DEPENDENCIES ########

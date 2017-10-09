@@ -58,6 +58,7 @@ void writeSingleInFile(Registry *registry) {
   FILE *registryFile = fopen(REGISTRY_FILE_NAME, "w");
 
   fprintfRegistry(registryFile, registry);
+  
   fclose(registryFile);
 }
 

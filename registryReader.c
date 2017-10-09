@@ -3,8 +3,10 @@
 #include <stdlib.h>
 #include "./libs/SO/specifics.h"
 #include "./libs/utils.h"
+#include "./libs/array/array.h"
 #include "registry.h"
 #include "registryGenerator.h"
+
 
 void readPaginated() {
   int pageSize;
@@ -38,7 +40,7 @@ void readPaginated() {
             &registry->operationDate->year
           ) == EOF;
           if(!hasReadWholeFile){
-            printRegistry(registry);            
+            printRegistry(registry);
           }
     } while (++printedCount < pageSize && !hasReadWholeFile);
 
@@ -56,16 +58,46 @@ void readPaginated() {
   pause();
 }
 
+Array *readPageToMemory(FILE *file, int pageSize) {
+  Registry *registry;
+  Array *readData = initArray(pageSize);
+
+  int readCount = 0;
+  bool hasReadWholeFile = false; 
+  do {
+    registry = initRegistry();
+
+    hasReadWholeFile = fscanf(file, REGISTRY_READ_STRING, 
+        &registry->key,
+        &registry->sold,
+        &registry->operationValue,
+        &registry->operationDate->day,
+        &registry->operationDate->month,
+        &registry->operationDate->year
+      ) == EOF;
+
+      if(!hasReadWholeFile){
+        addToArray(readData, (int) registry);
+      }
+    } while (++readCount < pageSize && !hasReadWholeFile);
+
+  return readData;
+}
+
 void readRegistryFile(int pageSize) {
   FILE *file;
-  
 
   if((file = fopen(REGISTRY_FILE_NAME, "r")) != NULL){
     Registry *registry = initRegistry();
 
-    fscanf(file, REGISTRY_READ_STRING, &registry->key, &registry->sold,
-          &registry->operationValue, &registry->operationDate->day,
-          &registry->operationDate->month, &registry->operationDate->year);
+    fscanf(file, REGISTRY_READ_STRING,
+       &registry->key,
+       &registry->sold,
+       &registry->operationValue,
+       &registry->operationDate->day,
+       &registry->operationDate->month,
+       &registry->operationDate->year
+      );
 
     fclose(file);
   } else {
