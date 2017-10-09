@@ -18,7 +18,7 @@ bool addToArray(Array *array, int data);
 
 bool setAtArray(Array *array, int data, int index);
 
-int getArrayLenght(Array *array);
+int getArrayLength(Array *array);
 
 bool isArrayFull(Array *array);
 

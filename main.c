@@ -86,7 +86,7 @@ void generateByUserChoosenSize() {
 
 int main(int argc, char **argv) {
   int chosen;
-
+  
   do {
     chosen = showGUIMainMenu();
   } while (chosen != getChainLength(menuList) - 1);

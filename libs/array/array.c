@@ -8,7 +8,7 @@ Array *initArray(int size) {
 
   arr->data = (int *) calloc(sizeof(int), size);
   arr->length = 0;
-  arr->size = size;
+  arr->size = size + 1;
 
   return arr;
 }
@@ -26,7 +26,7 @@ bool addToArray(Array *array, int data) {
 }
 
 bool setAtArray(Array *array, int data, int index) {
-  if (index > getArrayLenght(array)) {
+  if (index > getArrayLength(array)) {
     return false;
   } else {
     array->data[index] = data;
@@ -34,8 +34,8 @@ bool setAtArray(Array *array, int data, int index) {
   }
 }
 
-int getArrayLenght(Array *array) { return array->length; }
+int getArrayLength(Array *array) { return array->length; }
 
 bool isArrayFull(Array *array) {
-  return getArrayLenght(array) >= array->size - 1;
+  return getArrayLength(array) >= array->size - 1;
 }

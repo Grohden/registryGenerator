@@ -12,7 +12,6 @@ void readPaginated() {
   int pageSize;
   int printedCount;
   bool shouldKeepReading = true;
-  bool hasReadWholeFile = false;
 
   FILE *file;
 
@@ -22,37 +21,31 @@ void readPaginated() {
     return;
   };
 
-  Registry *registry = initRegistry();
+  Array *loadedReference;
+  int loadedLength = 0;
 
   printf("Page size: ");
   scanf("%d", &pageSize);
 
   do {
     printedCount = 0;
-    do {
-        hasReadWholeFile =
-          fscanf(file, REGISTRY_READ_STRING, 
-            &registry->key,
-            &registry->sold,
-            &registry->operationValue,
-            &registry->operationDate->day,
-            &registry->operationDate->month,
-            &registry->operationDate->year
-          ) == EOF;
-          if(!hasReadWholeFile){
-            printRegistry(registry);
-          }
-    } while (++printedCount < pageSize && !hasReadWholeFile);
+    loadedReference = readPageToMemory(file, pageSize);
+    loadedLength = getArrayLength(loadedReference);
 
-    if (!hasReadWholeFile) {
+    while (++printedCount < loadedLength) {
+      printRegistry((Registry*) getAtArray(loadedReference, printedCount));
+    };
+
+    if (isArrayFull(loadedReference)) {
       printf("Keep reading? (y/n): ");
       getchar();                             // handles enter key buffer.
-      shouldKeepReading = getchar() == 'y';  // fixme:handle insenstive.
+      shouldKeepReading = getchar() == 'y' || getchar() == 'Y';
     } else {
+      shouldKeepReading = false;
       println("There are no more registries to read.");
     }
 
-  } while (shouldKeepReading && !hasReadWholeFile);
+  } while (shouldKeepReading);
 
   fclose(file);
   pause();
