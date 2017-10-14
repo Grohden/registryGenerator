@@ -1,12 +1,11 @@
 #include "registryReader.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include "./libs/SO/specifics.h"
 #include "./libs/utils.h"
-#include "./libs/array/array.h"
-#include "registry.h"
-#include "registryGenerator.h"
 
+FILE *openRegistryFile(char *mode) {
+  return fopen(REGISTRY_FILE_NAME, mode);
+}
 
 void readPaginated() {
   int pageSize;
@@ -15,7 +14,7 @@ void readPaginated() {
 
   FILE *file;
 
-  if((file = fopen(REGISTRY_FILE_NAME, "r")) == NULL) {
+  if ((file = openRegistryFile("r")) == NULL) {
     println("Error, there's no registry file to be read.");
     pause();
     return;
@@ -56,7 +55,8 @@ Array *readPageToMemory(FILE *file, int pageSize) {
   Array *readData = initArray(pageSize);
 
   int readCount = 0;
-  bool hasReadWholeFile = false; 
+  bool hasReadWholeFile;
+
   do {
     registry = initRegistry();
 

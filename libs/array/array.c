@@ -1,5 +1,4 @@
 #include "array.h"
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,7 +7,7 @@ Array *initArray(int size) {
 
   arr->data = (int *) calloc(sizeof(int), size);
   arr->length = 0;
-  arr->size = size + 1;
+  arr->size = size;
 
   return arr;
 }

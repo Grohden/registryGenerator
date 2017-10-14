@@ -1,52 +1,56 @@
 #include "main.h"
 #include <malloc.h>
 #include <math.h>
-#include <string.h>
 #include "libs/SO/specifics.h"
-#include "libs/chainedList/chainedList.h"
-#include "libs/textualGUI/textualGUI.h"
+#include "libs/quickSort/quickSort.h"
 #include "libs/utils.h"
-#include "registry.h"
 #include "registryGenerator.h"
 #include "registryReader.h"
+#include "registrySort.h"
 
-#define SCREEN_RATIO 40
+#define MENU_OPTIONS_NUMBER 4
 
 static const int kbToBytes = 1024;
-
-static ChainedList *menuList = NULL;
 
 static char readableMeasures[3][3] = {"Kb\0", "Mb\0", "Gb\0"};
 
 void readFileForUser() { readPaginated(); }
 
-int showGUIMainMenu() {
-  // First we need to set screen size
-  setScreenSize(SCREEN_RATIO * 2, 40);
+void printMainMenuOptions() {
+  println("1 - Generate File (Size)");
+  println("2 - Generate File (Number of registries)");
+  println("3 - Read File");
+  println("4 - Exit Program");
+}
 
-  if (menuList == NULL) {
-    menuList = initChain();
-    // Add the items
-    addToChain(menuList, (void *)"Generate File (Size)");
-    addToChain(menuList, (void *)"Generate File (Number of registries)");
-    addToChain(menuList, (void *)"Read File");
-    addToChain(menuList, (void *)"Exit Program");
-  }
+int showGUIMainMenu() {
+
+  clearScreen();
+  printMainMenuOptions();
 
   // Draw the seletable list and wait for the response
-  int selected = drawSelectableList(menuList, true);
+  int selected;
+  printf("Option:");
+  scanf("%d", &selected);
 
+  while (selected > MENU_OPTIONS_NUMBER || selected < 1) {
+    clearScreen();
+    println("Invalid number. Provide a valid one!");
+    printf("Option:");
+    printMainMenuOptions();
+
+    scanf("%d", &selected);
+  }
+
+  clearScreen();
   switch (selected) {
-    case 0:
-      clearScreen();
-      generateByUserChoosenSize();
-      break;
     case 1:
-      clearScreen();
-      generateByNumberOfRegistries();
+      generateByUserChosenSize();
       break;
     case 2:
-      clearScreen();
+      generateByNumberOfRegistries();
+      break;
+    case 3:
       readFileForUser();
       break;
   }
@@ -60,10 +64,10 @@ void generateByNumberOfRegistries() {
   scanf("%d", &howMany);
 
   println("\nGenerating registries");
-  writeListInFile(howMany);
+  writeListInFile((unsigned int) howMany);
 }
 
-void generateByUserChoosenSize() {
+void generateByUserChosenSize() {
   int chosenUnit;
   int howMany;
 
@@ -84,12 +88,31 @@ void generateByUserChoosenSize() {
   writeListInFile(floor(pow(kbToBytes, chosenUnit) / getSizeOfRegistry()) * howMany);
 }
 
+void consumer(void *v) {
+  Registry *r = (Registry *) v;
+  printRegistry(r);
+}
+
 int main(int argc, char **argv) {
+
+  const int arraySize = 20;
+
+  //void **array = (void **) generateRandomArray(arraySize);
+
+  Array *pageArray = readPageToMemory(openRegistryFile("r"), arraySize);
+
+  size_t arrayLen = (size_t) pageArray->length;
+  void *arrayData = (void *) pageArray->data;
+
+  quickSortArray(arrayData, arrayLen, &orderByValue);
+  //qsort(pageArray->data, 10, sizeof(Registry*), &orderByType);
+
+  forEach(arrayData, arrayLen, &consumer);
+  /*
   int chosen;
-  
   do {
     chosen = showGUIMainMenu();
-  } while (chosen != getChainLength(menuList) - 1);
-
+  } while (chosen != 4);
   return 0;
+  */
 }

@@ -1,13 +1,10 @@
 #include "registryGenerator.h"
-#include <math.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "libs/SO/specifics.h"
 #include "libs/random/random.h"
 #include "libs/utils.h"
-#include "registry.h"
 
 static int cachedSize = 0;
 
@@ -87,6 +84,7 @@ void writeListInFile(unsigned int howMany) {
     registry = initRandomRegistry();
 
     fprintfRegistry(registryFile, registry);
+
     if (loaderCount + stepSize < count) {
       println("%d %%", percentageCount);
       percentageCount += percentageStep;
