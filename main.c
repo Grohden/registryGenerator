@@ -99,6 +99,8 @@ int main(int argc, char **argv) {
 
   //void **array = (void **) generateRandomArray(arraySize);
 
+  writeListInFile(1000);
+
   Array *pageArray = readPageToMemory(openRegistryFile("r"), arraySize);
 
   size_t arrayLen = (size_t) pageArray->length;
