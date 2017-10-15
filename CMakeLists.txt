@@ -17,6 +17,7 @@ set(SOURCE_FILES
         libs/textualGUI/textualGUI.c
         libs/textualGUI/textualGUI.h
         libs/utils.h
+        libs/utils.c
         libs/sortUtils.c
         libs/sortUtils.h
         main.c

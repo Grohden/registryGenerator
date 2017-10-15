@@ -1,3 +1,4 @@
+#include <stdio.h>
 #ifndef _REGISTRY_
 #define _REGISTRY_ 1
 
@@ -19,8 +20,11 @@ typedef struct TypeRegistry {
 #define REGISTRY_READ_STRING "%d %c %d %d %d %d"
 #define REGISTRY_FILE_NAME "registryFile.txt"
 
-void printRegistry(Registry *reg);
+/* Its supposed to be used as a consumer on a for each */
+void printRegistry(void *generic);
 
 Registry *initRegistry();
+
+FILE *openRegistryFile(char *mode);
 
 #endif // !_REGISTRY_

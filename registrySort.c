@@ -1,4 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <mem.h>
 #include "registrySort.h"
+#include "registryGenerator.h"
+#include "libs/array/array.h"
+#include "registryReader.h"
+#include "libs/quickSort/quickSort.h"
+#include "libs/utils.h"
 
 
 int orderByValue(void *f, void *s) {
@@ -21,4 +29,40 @@ int orderByDate(void *f, void *s) {
   const int secondSum = (second->year * 365) + (second->month * 30) + (second->day);
 
   return oneSum >= secondSum;
+}
+
+void registryWriteConsumer(void *registry, FILE *file) {
+  writeRegistryAtFile(file, (Registry *) registry);
+}
+
+
+void sortInChunks(FILE *file) {
+  const int arraySize = CHUNK_SIZE;
+
+  if (file == NULL) {
+    return;
+  }
+
+  Array *pageArray;
+  size_t arrayLen;
+  void *arrayData;
+
+  char fileNameTemplate[] = ".sorted_%d.txt";
+  char *fileNamePointer = (char *) calloc(strlen(fileNameTemplate), sizeof(char));
+
+  int loopCount = 0;
+  do {
+    pageArray = loadPageToMemory(file, arraySize);
+    arrayLen = (size_t) pageArray->length;
+    arrayData = (void *) pageArray->data;
+
+    quickSortArray(arrayData, arrayLen, &orderByDate);
+
+    forEach(arrayData, arrayLen, &printRegistry);
+
+    sprintf(fileNamePointer, fileNameTemplate, loopCount);
+    forEachWithFile(arrayData, arrayLen, fopen(fileNamePointer, "w"), &registryWriteConsumer);
+    loopCount++;
+  } while (arraySize == arrayLen);
+
 }

@@ -10,4 +10,10 @@
 
 #define println(...) printf(__VA_ARGS__); printf("\n");
 
+
+//TODO: review this, they can't be useful without lambdas!
+void forEach(void **array, size_t size, void ((*consumer)(void *)));
+
+void forEachWithFile(void **array, size_t size, FILE *file, void ((*consumer)(void *, FILE *)));
+
 #endif // _ROHDEN_UTILS

@@ -8,7 +8,7 @@ void readRegistryFile(int pageSize);
 
 FILE *openRegistryFile(char *mode);
 
-Array *readPageToMemory(FILE * file, int pageSize);
+Array *loadPageToMemory(FILE *file, int pageSize);
 
 void readPaginated();
 

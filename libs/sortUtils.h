@@ -17,6 +17,4 @@ void swapVariables(int *i, int *j);
 
 void printIntArray(int array[], int size);
 
-void forEach(void **array, size_t size, void ((*consumer)(void *)));
-
 #endif // _SORT_UTILS_

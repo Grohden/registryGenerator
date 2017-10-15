@@ -88,28 +88,8 @@ void generateByUserChosenSize() {
   writeListInFile(floor(pow(kbToBytes, chosenUnit) / getSizeOfRegistry()) * howMany);
 }
 
-void consumer(void *v) {
-  Registry *r = (Registry *) v;
-  printRegistry(r);
-}
-
 int main(int argc, char **argv) {
-
-  const int arraySize = 20;
-
-  //void **array = (void **) generateRandomArray(arraySize);
-
-  writeListInFile(1000);
-
-  Array *pageArray = readPageToMemory(openRegistryFile("r"), arraySize);
-
-  size_t arrayLen = (size_t) pageArray->length;
-  void *arrayData = (void *) pageArray->data;
-
-  quickSortArray(arrayData, arrayLen, &orderByValue);
-  //qsort(pageArray->data, 10, sizeof(Registry*), &orderByType);
-
-  forEach(arrayData, arrayLen, &consumer);
+  sortInChunks(openRegistryFile("r"));
   /*
   int chosen;
   do {

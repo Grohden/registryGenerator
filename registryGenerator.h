@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include "libs/chainedList/chainedList.h"
 #include "registry.h"
 
@@ -8,7 +9,7 @@
 
 Registry *initRandomRegistry();
 
-void writeSingleInFile(Registry *registry);
+void writeRegistryAtFile(FILE *file, Registry *registry);
 
 void writeListInFile(unsigned int howMany);
 

@@ -3,10 +3,6 @@
 #include "./libs/SO/specifics.h"
 #include "./libs/utils.h"
 
-FILE *openRegistryFile(char *mode) {
-  return fopen(REGISTRY_FILE_NAME, mode);
-}
-
 void readPaginated() {
   int pageSize;
   int printedCount;
@@ -28,7 +24,7 @@ void readPaginated() {
 
   do {
     printedCount = 0;
-    loadedReference = readPageToMemory(file, pageSize);
+    loadedReference = loadPageToMemory(file, pageSize);
     loadedLength = getArrayLength(loadedReference);
 
     while (++printedCount < loadedLength) {
@@ -50,7 +46,7 @@ void readPaginated() {
   pause();
 }
 
-Array *readPageToMemory(FILE *file, int pageSize) {
+Array *loadPageToMemory(FILE *file, int pageSize) {
   Registry *registry;
   Array *readData = initArray(pageSize);
 

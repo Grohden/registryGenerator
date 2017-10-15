@@ -28,9 +28,3 @@ void printIntArray(int array[], int size) {
   printf("\n");
 }
 
-void forEach(void **array, size_t size, void ((*consumer)(void *))) {
-  int index = 0;
-  for (index = 0; index < size; index++) {
-    consumer(array[index]);
-  }
-}
