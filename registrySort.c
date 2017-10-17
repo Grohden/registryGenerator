@@ -33,6 +33,9 @@ int orderByDate(void *f, void *s) {
 
 void registryWriteConsumer(void *registry, FILE *file) {
   writeRegistryAtFile(file, (Registry *) registry);
+  free(((Registry *) registry)->operationDate);
+  free((Registry *) registry);
+
 }
 
 const long getFileSize(FILE *file) {
@@ -42,47 +45,43 @@ const long getFileSize(FILE *file) {
   return size;
 }
 
-void sortInChunks(FILE *file) {
-  const int arraySize = CHUNK_SIZE;
+void doSortAndWrite(Array *pageArray, FILE *sortedPart){
 
+  size_t arrayLen = (size_t) getArrayLength(pageArray);
+  void* arrayData = (void *) pageArray->data;
+
+  println("Sorting chunk..");
+  quickSortArray(arrayData, arrayLen, &orderByDate);
+  //forEach(arrayData, arrayLen, &printRegistry);
+  println("Writing chunk to disk..");
+  forEachWithFile(arrayData, arrayLen, sortedPart, &registryWriteConsumer);
+  println("Finished chunk write to disk..");
+}
+
+void sortInChunks(FILE *file) {
   if (file == NULL) {
     return;
   }
 
-  const long registersInFile = (getFileSize(file) / getSizeOfRegistry());
-  const char fileNameTemplate[] = ".sorted_%d.txt";
-  char *fileNamePointer = (char *) calloc(strlen(fileNameTemplate), sizeof(char));
-  int filePart = 0;
-  int loopCount = 0;
-  void *arrayData;
-  Array *pageArray;
-  size_t arrayLen;
+  const long registriesQuantity = (getFileSize(file) / getSizeOfRegistry());
 
-  sprintf(fileNamePointer, fileNameTemplate, 1);
-  FILE *sortedPart = fopen(fileNamePointer, "w");
 
-  do {
-    pageArray = loadPageToMemory(file, arraySize);
-    arrayLen = (size_t) getArrayLength(pageArray);
-    arrayData = (void *) pageArray->data;
-    quickSortArray(arrayData, arrayLen, &orderByDate);
-    forEach(arrayData, arrayLen, &printRegistry);
-    forEachWithFile(arrayData, arrayLen, sortedPart, &registryWriteConsumer);
-    loopCount++;
-  } while (loopCount < registersInFile / 2);
+  //sprintf(fileNamePointer, fileNameTemplate, 1);
+  FILE *sortedPartOne = fopen(".sorted_1.txt", "w");
+  FILE *sortedPartTwo = fopen(".sorted_2.txt", "w");
 
-  fclose(sortedPart);
-  sprintf(fileNamePointer, fileNameTemplate, 2);
-  sortedPart = fopen(fileNamePointer, "w");
+  println("Loading first chunk to memory");
+  Array *firstChunkArray = loadChunkIntoMemory(file, registriesQuantity / 2);
+  doSortAndWrite(firstChunkArray, sortedPartOne);
+  free(firstChunkArray->data);
+  free(firstChunkArray);
 
-  do {
-    pageArray = loadPageToMemory(file, arraySize);
-    arrayLen = (size_t) getArrayLength(pageArray);
-    arrayData = (void *) pageArray->data;
-    quickSortArray(arrayData, arrayLen, &orderByDate);
-    forEach(arrayData, arrayLen, &printRegistry);
-    forEachWithFile(arrayData, arrayLen, sortedPart, &registryWriteConsumer);
-  } while (arraySize == arrayLen);
+  println("Loading second chunk to memory");
+  Array *secondChunkArray = loadChunkIntoMemory(file, registriesQuantity / 2);
+  doSortAndWrite(secondChunkArray, sortedPartTwo);
+  free(secondChunkArray->data);
+  free(secondChunkArray);
 
-  fclose(sortedPart);
+  fclose(sortedPartOne);
+  fclose(sortedPartTwo);
 }

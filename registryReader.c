@@ -24,7 +24,7 @@ void readPaginated() {
 
   do {
     printedCount = 0;
-    loadedReference = loadPageToMemory(file, pageSize);
+    loadedReference = loadChunkIntoMemory(file, pageSize);
     loadedLength = getArrayLength(loadedReference);
 
     while (++printedCount < loadedLength) {
@@ -46,7 +46,7 @@ void readPaginated() {
   pause();
 }
 
-Array *loadPageToMemory(FILE *file, int pageSize) {
+Array *loadChunkIntoMemory(FILE *file, int pageSize) {
   Registry *registry;
   Array *readData = initArray(pageSize);
 

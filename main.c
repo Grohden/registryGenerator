@@ -89,6 +89,7 @@ void generateByUserChosenSize() {
 }
 
 int main(int argc, char **argv) {
+  writeListInFile(floor(pow(kbToBytes, 3) / getSizeOfRegistry()) * 1);
   sortInChunks(openRegistryFile("r"));
   /*
   int chosen;
