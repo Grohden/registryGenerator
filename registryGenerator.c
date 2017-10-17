@@ -82,8 +82,7 @@ void writeListInFile(unsigned int howMany) {
       percentageCount += percentageStep;
       loaderCount += stepSize;
     }
-    free(registry->operationDate);
-    free(registry);
+    freeRegistry(registry);
 
   } while (count++ < howMany - 1);
 

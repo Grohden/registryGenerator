@@ -5,7 +5,9 @@
 
 #define CHUNK_SIZE 10
 
-void sortInChunks(FILE *file);
+void sortInChunks(FILE *file, int ((*predicate)(void *, void *)));
+
+void mergeSortedFiles(char *one, char *second, char *dest, int ((*predicate)(void *, void *)));
 
 int orderByDate(void *f, void *s);
 

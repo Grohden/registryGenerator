@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <mem.h>
 #include "registrySort.h"
 #include "registryGenerator.h"
 #include "libs/array/array.h"
@@ -33,8 +31,7 @@ int orderByDate(void *f, void *s) {
 
 void registryWriteConsumer(void *registry, FILE *file) {
   writeRegistryAtFile(file, (Registry *) registry);
-  free(((Registry *) registry)->operationDate);
-  free((Registry *) registry);
+  freeRegistry((Registry *) registry);
 
 }
 
@@ -45,20 +42,20 @@ const long getFileSize(FILE *file) {
   return size;
 }
 
-void doSortAndWrite(Array *pageArray, FILE *sortedPart){
+void doSortAndWrite(Array *pageArray, FILE *sortedPart, int (*predicate)(void *, void *)) {
 
   size_t arrayLen = (size_t) getArrayLength(pageArray);
-  void* arrayData = (void *) pageArray->data;
+  void *arrayData = (void *) pageArray->data;
 
   println("Sorting chunk..");
-  quickSortArray(arrayData, arrayLen, &orderByDate);
+  quickSortArray(arrayData, arrayLen, predicate);
   //forEach(arrayData, arrayLen, &printRegistry);
   println("Writing chunk to disk..");
   forEachWithFile(arrayData, arrayLen, sortedPart, &registryWriteConsumer);
   println("Finished chunk write to disk..");
 }
 
-void sortInChunks(FILE *file) {
+void sortInChunks(FILE *file, int ((*predicate)(void *, void *))) {
   if (file == NULL) {
     return;
   }
@@ -72,16 +69,62 @@ void sortInChunks(FILE *file) {
 
   println("Loading first chunk to memory");
   Array *firstChunkArray = loadChunkIntoMemory(file, registriesQuantity / 2);
-  doSortAndWrite(firstChunkArray, sortedPartOne);
-  free(firstChunkArray->data);
-  free(firstChunkArray);
+  doSortAndWrite(firstChunkArray, sortedPartOne, predicate);
+  freeArray(firstChunkArray);
 
   println("Loading second chunk to memory");
   Array *secondChunkArray = loadChunkIntoMemory(file, registriesQuantity / 2);
-  doSortAndWrite(secondChunkArray, sortedPartTwo);
-  free(secondChunkArray->data);
-  free(secondChunkArray);
+  doSortAndWrite(secondChunkArray, sortedPartTwo, predicate);
+  freeArray(secondChunkArray);
 
   fclose(sortedPartOne);
   fclose(sortedPartTwo);
+
+  mergeSortedFiles(".sorted_1.txt", ".sorted_2.txt", REGISTRY_FILE_NAME, predicate);
+}
+
+
+void mergeSortedFiles(char *one, char *second, char *dest, int ((*predicate)(void *, void *))) {
+  const char *readMode = "r";
+  FILE *sortedPartOne = fopen(one, readMode);
+  FILE *sortedPartTwo = fopen(second, readMode);
+  FILE *destinyFile = fopen(dest, "w");
+
+  Registry *fromFirstFile = initRegistry();
+  Registry *fromSecondFile = initRegistry();
+
+  //Load first registries
+  bool hasLoadedAllFirst = loadSingleRegistry(sortedPartOne, fromFirstFile);
+  bool hasLoadedAllSecond = loadSingleRegistry(sortedPartOne, fromSecondFile);
+
+  int countInFirst = 0;
+  int countInSecond = 0;
+
+
+  println("Merging %s  and %s to %s", one, second, dest);
+  do {
+    if (predicate(fromSecondFile, fromFirstFile)) {
+      writeRegistryAtFile(destinyFile, fromFirstFile);
+      countInFirst++;
+      hasLoadedAllFirst = loadSingleRegistry(sortedPartOne, fromFirstFile);
+    } else {
+      writeRegistryAtFile(destinyFile, fromSecondFile);
+      countInSecond++;
+      hasLoadedAllSecond = loadSingleRegistry(sortedPartTwo, fromSecondFile);
+    }
+  } while (!hasLoadedAllFirst && !hasLoadedAllSecond);
+
+  //Writes any remaining registry in ONE of the files
+  while (!hasLoadedAllFirst) {
+    writeRegistryAtFile(destinyFile, fromFirstFile);
+    hasLoadedAllFirst = loadSingleRegistry(sortedPartOne, fromFirstFile);
+  }
+
+  while (!hasLoadedAllSecond) {
+    writeRegistryAtFile(destinyFile, fromSecondFile);
+    hasLoadedAllSecond = loadSingleRegistry(sortedPartTwo, fromSecondFile);
+  }
+
+  freeRegistry(fromFirstFile);
+  freeRegistry(fromSecondFile);
 }

@@ -8,7 +8,19 @@
 #include "registryReader.h"
 #include "registrySort.h"
 
-#define MENU_OPTIONS_NUMBER 4
+#define IMPOSSIBLE_MESSAGE "Woa men, how did you get here? :o"
+
+//Order menu consts
+#define BY_VALUE 1
+#define BY_TYPE 2
+#define BY_DATE 3
+
+//Main menu consts
+#define GENERATE_SIZE 1
+#define GENERATE_NUMBER 2
+#define READ_MENU 3
+#define SORT_MENU 4
+#define EXIT_MENU 5
 
 static const int kbToBytes = 1024;
 
@@ -17,10 +29,11 @@ static char readableMeasures[3][3] = {"Kb\0", "Mb\0", "Gb\0"};
 void readFileForUser() { readPaginated(); }
 
 void printMainMenuOptions() {
-  println("1 - Generate File (Size)");
-  println("2 - Generate File (Number of registries)");
-  println("3 - Read File");
-  println("4 - Exit Program");
+  println("%d - Generate File (Size)", GENERATE_SIZE);
+  println("%d - Generate File (Number of registries)", GENERATE_NUMBER);
+  println("%d - Read File", READ_MENU);
+  println("%d - Sort File", SORT_MENU);
+  println("%d - Exit Program", EXIT_MENU);
 }
 
 int showGUIMainMenu() {
@@ -33,9 +46,10 @@ int showGUIMainMenu() {
   printf("Option:");
   scanf("%d", &selected);
 
-  while (selected > MENU_OPTIONS_NUMBER || selected < 1) {
+  while (selected > EXIT_MENU || selected < 1) {
     clearScreen();
     println("Invalid number. Provide a valid one!");
+
     printf("Option:");
     printMainMenuOptions();
 
@@ -44,18 +58,58 @@ int showGUIMainMenu() {
 
   clearScreen();
   switch (selected) {
-    case 1:
+    case GENERATE_SIZE:
       generateByUserChosenSize();
       break;
-    case 2:
+    case GENERATE_NUMBER:
       generateByNumberOfRegistries();
       break;
-    case 3:
+    case READ_MENU:
       readFileForUser();
       break;
+    case SORT_MENU:
+      sortFileMenu();
+      break;
+    default:
+      return EXIT_MENU;
   }
 
   return selected;
+}
+
+void sortFileMenu() {
+  int chosenOption;
+
+  printf("%d - Sort by transaction value\n", BY_VALUE);
+  printf("%d - Sort by transaction type\n", BY_TYPE);
+  printf("%d - Sort by transaction date\n", BY_DATE);
+  scanf("%d", &chosenOption);
+
+  while (chosenOption < 0 || chosenOption > 3) {
+    clearScreen();
+    println("Invalid option, provide a valid one:");
+    printf("%d - Sort by transaction value\n", BY_VALUE);
+    printf("%d - Sort by transaction type\n", BY_TYPE);
+    printf("%d - Sort by transaction date\n", BY_DATE);
+  }
+  const int correctChoice = chosenOption;
+
+  switch (correctChoice) {
+    case BY_VALUE:
+      sortInChunks(openRegistryFile("r"), &orderByValue);
+      break;
+    case BY_TYPE:
+    println("Warning, this may take a while")
+      sortInChunks(openRegistryFile("r"), &orderByType);
+      break;
+    case BY_DATE:
+      sortInChunks(openRegistryFile("r"), &orderByDate);
+      break;
+    default:
+    println(IMPOSSIBLE_MESSAGE);
+      break;
+  }
+
 }
 
 void generateByNumberOfRegistries() {
@@ -89,13 +143,10 @@ void generateByUserChosenSize() {
 }
 
 int main(int argc, char **argv) {
-  writeListInFile(floor(pow(kbToBytes, 3) / getSizeOfRegistry()) * 1);
-  sortInChunks(openRegistryFile("r"));
-  /*
   int chosen;
   do {
     chosen = showGUIMainMenu();
-  } while (chosen != 4);
+  } while (chosen != EXIT_MENU);
   return 0;
-  */
+
 }

@@ -36,3 +36,8 @@ Registry *initRegistry() {
 FILE *openRegistryFile(char *mode) {
   return fopen(REGISTRY_FILE_NAME, mode);
 }
+
+void freeRegistry(Registry *registry) {
+  free(registry->operationDate);
+  free(registry);
+}

@@ -56,14 +56,7 @@ Array *loadChunkIntoMemory(FILE *file, int pageSize) {
   do {
     registry = initRegistry();
 
-    hasReadWholeFile = fscanf(file, REGISTRY_READ_STRING, 
-        &registry->key,
-        &registry->sold,
-        &registry->operationValue,
-        &registry->operationDate->day,
-        &registry->operationDate->month,
-        &registry->operationDate->year
-      ) == EOF;
+    hasReadWholeFile = loadSingleRegistry(file, registry);
 
       if(!hasReadWholeFile){
         addToArray(readData, (int) registry);
@@ -71,6 +64,17 @@ Array *loadChunkIntoMemory(FILE *file, int pageSize) {
     } while (++readCount < pageSize && !hasReadWholeFile);
 
   return readData;
+}
+
+bool loadSingleRegistry(FILE *openReadFile, Registry *destiny) {
+  return fscanf(openReadFile, REGISTRY_READ_STRING,
+                &destiny->key,
+                &destiny->sold,
+                &destiny->operationValue,
+                &destiny->operationDate->day,
+                &destiny->operationDate->month,
+                &destiny->operationDate->year
+  ) == EOF;
 }
 
 void readRegistryFile(int pageSize) {

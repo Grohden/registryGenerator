@@ -27,4 +27,6 @@ Registry *initRegistry();
 
 FILE *openRegistryFile(char *mode);
 
+void freeRegistry(Registry *registry);
+
 #endif // !_REGISTRY_

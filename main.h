@@ -5,3 +5,5 @@ int showGUIMainMenu();
 void generateByUserChosenSize();
 
 void generateByNumberOfRegistries();
+
+void sortFileMenu();

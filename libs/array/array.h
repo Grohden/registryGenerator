@@ -22,4 +22,6 @@ int getArrayLength(Array *array);
 
 bool isArrayFull(Array *array);
 
+void freeArray(Array *array);
+
 #endif  // !_ARRAY_

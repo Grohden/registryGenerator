@@ -38,3 +38,8 @@ int getArrayLength(Array *array) { return array->length; }
 bool isArrayFull(Array *array) {
   return getArrayLength(array) >= array->size;
 }
+
+void freeArray(Array *array) {
+  free(array->data);
+  free(array);
+}

@@ -8,6 +8,8 @@ void readRegistryFile(int pageSize);
 
 FILE *openRegistryFile(char *mode);
 
+bool loadSingleRegistry(FILE *openReadFile, Registry *destiny);
+
 Array *loadChunkIntoMemory(FILE *file, int pageSize);
 
 void readPaginated();
