@@ -35,6 +35,12 @@ void registryWriteConsumer(void *registry, FILE *file) {
   writeRegistryAtFile(file, (Registry *) registry);
 }
 
+const long getFileSize(FILE *file) {
+  fseek(file, 0, SEEK_END); // seek to end of file
+  const long size = ftell(file); // get current file pointer
+  fseek(file, 0, SEEK_SET);
+  return size;
+}
 
 void sortInChunks(FILE *file) {
   const int arraySize = CHUNK_SIZE;
@@ -43,26 +49,40 @@ void sortInChunks(FILE *file) {
     return;
   }
 
+  const long registersInFile = (getFileSize(file) / getSizeOfRegistry());
+  const char fileNameTemplate[] = ".sorted_%d.txt";
+  char *fileNamePointer = (char *) calloc(strlen(fileNameTemplate), sizeof(char));
+  int filePart = 0;
+  int loopCount = 0;
+  void *arrayData;
   Array *pageArray;
   size_t arrayLen;
-  void *arrayData;
 
-  char fileNameTemplate[] = ".sorted_%d.txt";
-  char *fileNamePointer = (char *) calloc(strlen(fileNameTemplate), sizeof(char));
+  sprintf(fileNamePointer, fileNameTemplate, 1);
+  FILE *sortedPart = fopen(fileNamePointer, "w");
 
-  int loopCount = 0;
   do {
     pageArray = loadPageToMemory(file, arraySize);
-    arrayLen = (size_t) pageArray->length;
+    arrayLen = (size_t) getArrayLength(pageArray);
     arrayData = (void *) pageArray->data;
-
     quickSortArray(arrayData, arrayLen, &orderByDate);
-
     forEach(arrayData, arrayLen, &printRegistry);
-
-    sprintf(fileNamePointer, fileNameTemplate, loopCount);
-    forEachWithFile(arrayData, arrayLen, fopen(fileNamePointer, "w"), &registryWriteConsumer);
+    forEachWithFile(arrayData, arrayLen, sortedPart, &registryWriteConsumer);
     loopCount++;
+  } while (loopCount < registersInFile / 2);
+
+  fclose(sortedPart);
+  sprintf(fileNamePointer, fileNameTemplate, 2);
+  sortedPart = fopen(fileNamePointer, "w");
+
+  do {
+    pageArray = loadPageToMemory(file, arraySize);
+    arrayLen = (size_t) getArrayLength(pageArray);
+    arrayData = (void *) pageArray->data;
+    quickSortArray(arrayData, arrayLen, &orderByDate);
+    forEach(arrayData, arrayLen, &printRegistry);
+    forEachWithFile(arrayData, arrayLen, sortedPart, &registryWriteConsumer);
   } while (arraySize == arrayLen);
 
+  fclose(sortedPart);
 }
