@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 
 
 #ifndef _ARRAY_
@@ -10,7 +11,7 @@ typedef struct TypeArray {
   int size;
 } Array;
 
-Array *initArray(int size);
+Array *initArray(size_t size);
 
 int getAtArray(Array *array, int index);
 

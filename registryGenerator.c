@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "libs/SO/specifics.h"
 #include "libs/random/random.h"
 #include "libs/utils.h"
 
@@ -23,8 +22,8 @@ static Date *generateRandomDate() {
   return date;
 }
 
-static float getValuePercentage(int value, char percentage) {
-  return ((value / 100) * percentage);
+static float getValuePercentage(double value, char percentage) {
+  return (float) ((value / 100) * percentage);
 }
 
 void writeRegistryAtFile(FILE *file, Registry *registry) {
@@ -51,9 +50,9 @@ Registry *initRandomRegistry() {
   return registry;
 }
 
-void writeListInFile(unsigned int howMany) {
+void writeListInFile(double howMany) {
   if (howMany < 1) {
-    println("%d is not a valid number",howMany);
+    println("%f is not a valid number", howMany);
     return;
   }
 
@@ -61,8 +60,8 @@ void writeListInFile(unsigned int howMany) {
 
   FILE *registryFile = openRegistryFile("w");
 
-  const int percentageStep = howMany < 1000000 ? 10 : 5;
-  const float stepSize = getValuePercentage(howMany, percentageStep);
+  char percentageStep = (char) (howMany < 1000000 ? 10 : 5);
+  float stepSize = getValuePercentage(howMany, percentageStep);
   int percentageCount = 0;
   int loaderCount = 0;
   int count = 0;
@@ -90,7 +89,7 @@ void writeListInFile(unsigned int howMany) {
   time(&end_t);
   diff_t = difftime(end_t, start_t);
 
-  printAtBottom("Generated %d registries in %.2f minutes", howMany, diff_t / 60);
+  println("Generated %d registries in %.2f minutes", howMany, diff_t / 60);
   fclose(registryFile);
 }
 

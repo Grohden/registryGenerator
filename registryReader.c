@@ -1,12 +1,11 @@
 #include "registryReader.h"
 #include <stdlib.h>
-#include "./libs/SO/specifics.h"
 #include "./libs/utils.h"
 
 void readPaginated() {
   int pageSize;
   int printedCount;
-  bool shouldKeepReading = true;
+  bool shouldKeepReading;
 
   FILE *file;
 
@@ -48,7 +47,7 @@ void readPaginated() {
 
 Array *loadChunkIntoMemory(FILE *file, int pageSize) {
   Registry *registry;
-  Array *readData = initArray(pageSize);
+  Array *readData = initArray((size_t) pageSize);
 
   int readCount = 0;
   bool hasReadWholeFile;
@@ -76,25 +75,3 @@ bool loadSingleRegistry(FILE *openReadFile, Registry *destiny) {
                 &destiny->operationDate->year
   ) == EOF;
 }
-
-void readRegistryFile(int pageSize) {
-  FILE *file;
-
-  if((file = fopen(REGISTRY_FILE_NAME, "r")) != NULL){
-    Registry *registry = initRegistry();
-
-    fscanf(file, REGISTRY_READ_STRING,
-       &registry->key,
-       &registry->sold,
-       &registry->operationValue,
-       &registry->operationDate->day,
-       &registry->operationDate->month,
-       &registry->operationDate->year
-      );
-
-    fclose(file);
-  } else {
-    println("Error, there's no registry file to be read.");
-  }
-  pause();
-};

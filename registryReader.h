@@ -4,8 +4,6 @@
 #ifndef _REGISTRY_READER_
 #define _REGISTRY_READER_ 1
 
-void readRegistryFile(int pageSize);
-
 FILE *openRegistryFile(char *mode);
 
 bool loadSingleRegistry(FILE *openReadFile, Registry *destiny);

@@ -62,8 +62,6 @@ void sortInChunks(FILE *file, int ((*predicate)(void *, void *))) {
 
   const long registriesQuantity = (getFileSize(file) / getSizeOfRegistry());
 
-
-  //sprintf(fileNamePointer, fileNameTemplate, 1);
   FILE *sortedPartOne = fopen(".sorted_1.txt", "w");
   FILE *sortedPartTwo = fopen(".sorted_2.txt", "w");
 
@@ -84,11 +82,11 @@ void sortInChunks(FILE *file, int ((*predicate)(void *, void *))) {
 }
 
 
-void mergeSortedFiles(char *one, char *second, char *dest, int ((*predicate)(void *, void *))) {
+void mergeSortedFiles(char *one, char *second, char *destiny, int ((*predicate)(void *, void *))) {
   const char *readMode = "r";
   FILE *sortedPartOne = fopen(one, readMode);
   FILE *sortedPartTwo = fopen(second, readMode);
-  FILE *destinyFile = fopen(dest, "w");
+  FILE *destinyFile = fopen(destiny, "w");
 
   Registry *fromFirstFile = initRegistry();
   Registry *fromSecondFile = initRegistry();
@@ -101,7 +99,7 @@ void mergeSortedFiles(char *one, char *second, char *dest, int ((*predicate)(voi
   int countInSecond = 0;
 
 
-  println("Merging %s  and %s to %s", one, second, dest);
+  println("Merging %s  and %s to %s", one, second, destiny);
   do {
     if (predicate(fromSecondFile, fromFirstFile)) {
       writeRegistryAtFile(destinyFile, fromFirstFile);

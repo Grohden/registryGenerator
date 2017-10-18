@@ -1,7 +1,6 @@
 #include "main.h"
 #include <malloc.h>
 #include <math.h>
-#include "libs/SO/specifics.h"
 #include "libs/quickSort/quickSort.h"
 #include "libs/utils.h"
 #include "registryGenerator.h"
@@ -41,7 +40,7 @@ int showGUIMainMenu() {
   clearScreen();
   printMainMenuOptions();
 
-  // Draw the seletable list and wait for the response
+  // Draw the selectable list and wait for the response
   int selected;
   printf("Option:");
   scanf("%d", &selected);

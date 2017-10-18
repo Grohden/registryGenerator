@@ -1,8 +1,7 @@
 #include "array.h"
-#include <stdio.h>
 #include <stdlib.h>
 
-Array *initArray(int size) {
+Array *initArray(size_t size) {
   Array *arr = (Array *) calloc(sizeof(Array), 1);
 
   arr->data = (int *) calloc(sizeof(int), size);

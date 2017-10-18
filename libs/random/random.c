@@ -1,7 +1,6 @@
 #include "random.h"
 #include <time.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 static int CALLED_SEED = 0;
 
@@ -18,22 +17,21 @@ int getRandomNumber()
 {
     makeSureSeed();
     return rand();
-};
+}
 
 int getRandomBetweenRange(int max, int min)
 {
-    return (double)getRandomNumber() / (double)RAND_MAX * (max - min) + min;
+  return (int) ((double) getRandomNumber() / (double) RAND_MAX * (max - min) + min);
 }
 
-int *generateRandomArray(int size)
+int *generateRandomArray(size_t size)
 {
     int arrayLen = -1;
-    int *randomArray = (int *)calloc(size, sizeof(int));
+  int *randomArray = (int *) calloc(size, sizeof(int));
 
     while (arrayLen++ < size - 1)
     {
         randomArray[arrayLen] = getRandomNumber() / 100;
-        //printf("%d \t", randomArray[arrayLen]);
     }
 
     return randomArray;
