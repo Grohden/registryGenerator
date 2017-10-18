@@ -14,9 +14,32 @@ int orderByValue(void *f, void *s) {
 }
 
 int orderByType(void *f, void *s) {
-  const Registry *one = (Registry *) f;
-  const Registry *second = (Registry *) s;
-  return one->sold <= second->sold;
+  const char one = ((Registry *) f)->sold;
+  const char second = ((Registry *) s)->sold;
+
+  const bool firstIsC = one == 'C';
+  const bool firstIsV = !firstIsC;
+
+  const bool secondIsC = second == 'C';
+  const bool secondIsV = !secondIsC;
+
+  if (firstIsC && secondIsV) {
+    return false;
+  }
+
+  if (firstIsV && secondIsV) {
+    return false;
+  }
+
+  if (firstIsV && secondIsC) {
+    return true;
+  }
+
+  if (firstIsC && secondIsC) {
+    return true;
+  }
+
+
 }
 
 int orderByDate(void *f, void *s) {
