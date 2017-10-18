@@ -36,8 +36,8 @@ void registryWriteConsumer(void *registry, FILE *file) {
 }
 
 const long getFileSize(FILE *file) {
-  fseek(file, 0, SEEK_END); // seek to end of file
-  const long size = ftell(file); // get current file pointer
+  fseek(file, 0, SEEK_END);
+  const long size = ftell(file);
   fseek(file, 0, SEEK_SET);
   return size;
 }
@@ -125,4 +125,8 @@ void mergeSortedFiles(char *one, char *second, char *destiny, int ((*predicate)(
 
   freeRegistry(fromFirstFile);
   freeRegistry(fromSecondFile);
+
+  fclose(sortedPartOne);
+  fclose(sortedPartTwo);
+  fclose(destinyFile);
 }
