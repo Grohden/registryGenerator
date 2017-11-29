@@ -16,6 +16,8 @@ set(SOURCE_FILES
         libs/sortUtils.h
         main.c
         main.h
+        hash.c
+        hash.h
         registry.c
         registry.h
         registryGenerator.c
