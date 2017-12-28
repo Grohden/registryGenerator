@@ -1,3 +1,5 @@
 *.o
 *.exe
 registryFile.txt
+.idea
+cmake-build-debug
