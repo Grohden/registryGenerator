@@ -37,7 +37,7 @@ unsigned long hash(const char *string) {
     us++;
   }
 
-  return h;
+  return h % cachedTable->size;
 }
 
 void putIntoHashTable(char *string, void *structPointer) {

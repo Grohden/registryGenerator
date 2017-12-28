@@ -6,6 +6,7 @@
 #include "registryGenerator.h"
 #include "registryReader.h"
 #include "registrySort.h"
+#include "hash.h"
 
 #define IMPOSSIBLE_MESSAGE "Woa men, how did you get here? :o"
 
@@ -141,7 +142,32 @@ void generateByUserChosenSize() {
   writeListInFile(floor(pow(kbToBytes, chosenUnit) / getSizeOfRegistry()) * howMany);
 }
 
+void doHash(){
+  size_t tableSize = 100;
+  int loop = 0;
+  Registry * r;
+  char *str = malloc(sizeof(char)*10);
+  char **strList = calloc(sizeof(char), tableSize);
+
+  createCachedHashTable(tableSize);
+  do {
+    r = initRandomRegistry();
+    sprintf(str,"%d", r->operationValue);
+    putIntoHashTable(str, r);
+    //strList[loop] = str;
+  } while(loop++ < tableSize);
+
+  return;
+  loop = 0;
+  do {
+    //printRegistry((Registry *) getFromHashTable(strList[loop]));
+  } while(loop++ < tableSize);
+}
+
 int main(int argc, char **argv) {
+  doHash();
+  return 0;
+
   int chosen;
   do {
     chosen = showGUIMainMenu();
