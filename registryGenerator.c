@@ -1,13 +1,9 @@
 #include "registryGenerator.h"
-#include <math.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "libs/SO/specifics.h"
 #include "libs/random/random.h"
 #include "libs/utils.h"
-#include "registry.h"
 
 static int cachedSize = 0;
 
@@ -26,20 +22,20 @@ static Date *generateRandomDate() {
   return date;
 }
 
-static float getValuePercentage(int value, char percentage) {
-  return ((value / 100) * percentage);
+static float getValuePercentage(double value, char percentage) {
+  return (float) ((value / 100) * percentage);
 }
 
-static void fprintfRegistry(FILE *f, Registry *registry) {
+void writeRegistryAtFile(FILE *file, Registry *registry) {
   fprintf(
-    f,
-    REGISTRY_WRITE_STRING, 
-    registry->key, 
-    registry->sold,
-    registry->operationValue,
-    registry->operationDate->day,
-    registry->operationDate->month,
-    registry->operationDate->year
+          file,
+          REGISTRY_WRITE_STRING,
+          registry->key,
+          registry->sold,
+          registry->operationValue,
+          registry->operationDate->day,
+          registry->operationDate->month,
+          registry->operationDate->year
   );
 }
 
@@ -47,52 +43,45 @@ Registry *initRandomRegistry() {
   Registry *registry = calloc(1, sizeof(Registry));
 
   registry->key = updateKeyGenerator();
-  registry->sold = getRandomBetweenRange(0, 2) == 0 ? 'C' : 'V';
+  registry->sold = (char) (getRandomBetweenRange(0, 2) == 0 ? 'C' : 'V');
   registry->operationValue = getRandomBetweenRange(100, 999999999);
   registry->operationDate = generateRandomDate();
 
   return registry;
 }
 
-void writeSingleInFile(Registry *registry) {
-  FILE *registryFile = fopen(REGISTRY_FILE_NAME, "w");
-
-  fprintfRegistry(registryFile, registry);
-  fclose(registryFile);
-}
-
-void writeListInFile(unsigned int howMany) {
+void writeListInFile(double howMany) {
   if (howMany < 1) {
-    println("%d is not a valid number",howMany);
+    println("%f is not a valid number", howMany);
     return;
   }
 
   clearKeys();
 
-  FILE *registryFile = fopen(REGISTRY_FILE_NAME, "w");
+  FILE *registryFile = openRegistryFile("w");
 
-  Registry *registry;
-
-  const int percentageStep = howMany < 1000000 ? 10 : 5;
-  const float stepSize = getValuePercentage(howMany, percentageStep);
+  char percentageStep = (char) (howMany < 1000000 ? 10 : 5);
+  float stepSize = getValuePercentage(howMany, percentageStep);
   int percentageCount = 0;
   int loaderCount = 0;
   int count = 0;
 
+  //Init a counter
   time_t start_t, end_t;
   time(&start_t);
 
+  Registry *registry;
   do {
     registry = initRandomRegistry();
 
-    fprintfRegistry(registryFile, registry);
+    writeRegistryAtFile(registryFile, registry);
+
     if (loaderCount + stepSize < count) {
       println("%d %%", percentageCount);
       percentageCount += percentageStep;
       loaderCount += stepSize;
     }
-    free(registry->operationDate);
-    free(registry);
+    freeRegistry(registry);
 
   } while (count++ < howMany - 1);
 
@@ -100,8 +89,7 @@ void writeListInFile(unsigned int howMany) {
   time(&end_t);
   diff_t = difftime(end_t, start_t);
 
-  printAtBottom("Generated %d registries in %.2f minutes", howMany, diff_t / 60);
-  pause();
+  println("Generated %d registries in %.2f minutes", howMany, diff_t / 60);
   fclose(registryFile);
 }
 
