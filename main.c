@@ -98,8 +98,8 @@ void sortFileMenu() {
     case BY_VALUE:
       sortInChunks(openRegistryFile("r"), &orderByValue);
       break;
-    case BY_TYPE:
-    println("Warning, this may take a while")
+    case BY_TYPE: 
+      println("Warning, this may take a while");
       sortInChunks(openRegistryFile("r"), &orderByType);
       break;
     case BY_DATE:
