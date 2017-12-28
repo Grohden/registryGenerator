@@ -15,9 +15,10 @@ typedef struct TypeRegistry {
     Date *operationDate;
 } Registry;
 
-#define REGISTRY_WRITE_STRING "%010d %c %09d %02d %02d %04d\n"
-#define REGISTRY_READ_STRING "%d %c %d %d %d %d"
-#define REGISTRY_FILE_NAME "registryFile.txt"
+#define REGISTRY_WRITE_STRING "%010d;%c;%09d;%02d;%02d;%04d\n"
+#define REGISTRY_PRINT_STRING "%010d %c %09d %02d %02d %04d\n"
+#define REGISTRY_READ_STRING "%d;%c;%d;%d;%d;%d"
+#define REGISTRY_FILE_NAME "registryFile.csv"
 
 void printRegistry(Registry *reg);
 

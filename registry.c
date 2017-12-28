@@ -5,7 +5,7 @@
 void printRegistry(Registry *reg)
 {
     printf(
-        REGISTRY_WRITE_STRING,
+        REGISTRY_PRINT_STRING,
         reg->key,
         reg->sold,
         reg->operationValue,
